@@ -9,9 +9,6 @@
 	} from "vue";
 	import { useChatStore } from "../stores/Chat";
 	const store = useChatStore();
-	onMounted(() => {
-		store.getApi();
-	});
 </script>
 <template>
 	<div>
@@ -20,7 +17,7 @@
 			<div class="username"></div>
 			<div class="chat-message">
 				<div class="arrow"></div>
-				{{ store.messages[0] }}
+				<slot></slot>
 			</div>
 		</div>
 	</div>
@@ -42,8 +39,6 @@
 	}
 	.chat-message {
 		position: absolute;
-		width: 50vw;
-		height: 8vh;
 		background-color: #7d71e8;
 		border-radius: 0.5rem;
 		color: #fbfef9;
@@ -62,7 +57,7 @@
 		font-size: 0;
 		border: solid 8px;
 		border-color: #f2f4f8 #7d71e8 #f2f4f8 #f2f4f8;
-		z-index: 1;
+		z-index: 0;
 		box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
 	}
 </style>

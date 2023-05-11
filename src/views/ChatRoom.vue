@@ -24,40 +24,53 @@
 	onMounted(() => {
 		Welcome();
 	});
-	function Add() {
-		store.addMessage(chatmsg);
+	function AddMsg() {
+		let msg = chatmsg.value; //使用另外一个响应式数据替换即可
+		store.addMessage(msg);
 		chatmsg.value = "";
 	}
+	onBeforeMount(() => {
+		store.getApi();
+	});
 </script>
 <template>
 	<div>
 		<div class="chatRoom">
-			<chatMessage></chatMessage>
-			<div class="form-control">
-				<input
-					class="input input-alt"
-					placeholder="请发送你的消息!"
-					required=""
-					v-model="chatmsg"
-					type="text" />
-				<span class="input-border input-border-alt"></span>
-			</div>
-
-			<button class="sendBtn">
-				<span> 发 送 </span>
-			</button>
+			<chatMessage
+				v-for="(item, index) in store.messages"
+				:key="index"
+				>{{ item }}</chatMessage
+			>
 		</div>
+		<div class="form-control">
+			<input
+				class="input input-alt"
+				placeholder="请发送你的消息!"
+				required=""
+				v-model="chatmsg"
+				type="text"
+				@keyup.enter="AddMsg()" />
+			<span class="input-border input-border-alt"></span>
+		</div>
+
+		<button
+			class="sendBtn"
+			@click="AddMsg()">
+			<span> 发 送 </span>
+		</button>
 	</div>
 </template>
 
 <style scoped>
 	.chatRoom {
 		width: 100vw;
-		height: 87vh;
+		height: 90vh;
+		border: #ff6464 1px solid;
 		border-radius: 1rem;
 		background-image: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
 		box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
 		z-index: -100;
+		overflow-y: auto;
 	}
 	.sendBtn {
 		padding: 0.1em 0.25em;

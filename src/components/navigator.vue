@@ -1,0 +1,57 @@
+<template>
+  <div class="container">
+    <div class="text">在线人数：{{count}}</div>
+    <div class="bt">
+        <button>登出</button>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import {ref} from "vue"
+const count = ref(0)
+</script>
+
+<style scoped>
+  @media (max-width: 300px) {
+
+  }
+
+  .container {
+    height: 80px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    font-size: 16px;
+    width: 100%;
+    background: linear-gradient(125deg, #f5f7fa, white);    
+    /* background: linear-gradient(125deg, rgba(249, 203, 209, .3), rgba(206, 181, 223, .3), rgba(163, 204, 246, .3), rgba(167, 245, 198, .3), rgba(233, 239, 183, .3), rgba(249, 171, 152, .3), rgba(246, 152, 152, .3));     */
+    animation: bgAnimation 15s linear infinite;
+    background-size: 400%;
+  }
+
+  @keyframes bgAnimation {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+  }
+
+  button {
+    width: 100px;
+    height: 40px;
+    font-size: 20px;
+    color: rgb(62, 65, 65);
+    letter-spacing: 2px;
+    line-height: 40px;
+    border-radius: 35px;
+    border: none;
+    background-image: linear-gradient(to left, #e1dcfd, #dbfbf0);
+    text-align: center;
+  }
+</style>

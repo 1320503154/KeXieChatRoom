@@ -4,7 +4,7 @@ import axios from "axios";
 export const useChatStore = defineStore("chat", {
 	state: () => ({
 		username: "三院科协",
-		avatarSelected: RandomNum,
+		avatarSelected: Math.floor(Math.random() * 10) + 1,
 		messages: [],
 	}),
 	getters: {

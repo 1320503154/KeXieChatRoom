@@ -33,6 +33,9 @@
 </template>
 
 <style scoped>
+	.username {
+		color: #fbfef9;
+	}
 	.TouXiang {
 		width: 50px;
 		height: 50px;

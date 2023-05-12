@@ -71,9 +71,12 @@
 	.chatRoom {
 		width: 100vw;
 		height: 90vh;
-		border: #ff6464 1px solid;
 		border-radius: 1rem;
-		background-image: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+		background: url("/聊天背景.jpg") no-repeat center center;
+		background-size: cover;
+		backdrop-filter: blur(5px);
+		background-color: rgba(255, 255, 255, 0.8);
+		/* background-image: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); */
 		box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
 		z-index: -100;
 		overflow-y: auto;

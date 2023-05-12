@@ -1,8 +1,10 @@
 <script setup>
 	import { RouterLink, RouterView } from "vue-router";
+	import navigator from "./components/navigator.vue"
 </script>
 
 <template>
+	<navigator/>
 	<div class="navBar">
 		<RouterLink
 			to="/"
@@ -25,6 +27,8 @@
 	.navBar {
 		display: flex;
 		justify-content: space-around;
+		height: 8vh;
+    	align-items: center;
 	}
 	.Home {
 		text-decoration: none;

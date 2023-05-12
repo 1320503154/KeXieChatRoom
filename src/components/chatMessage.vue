@@ -23,10 +23,10 @@
 	<div>
 		<div class="chat-container">
 			<div :style="TouXiangStyles"></div>
-			<div class="username"></div>
+			<div class="username"><slot name="username"></slot></div>
 			<div class="chat-message">
 				<div class="arrow"></div>
-				<slot></slot>
+				<slot name="msg"></slot>
 			</div>
 		</div>
 	</div>
@@ -43,6 +43,7 @@
 	}
 	.chat-container {
 		margin-top: 1rem;
+		margin-left: 1rem;
 		position: relative;
 		/* border: 1px solid tomato; */
 	}
@@ -57,6 +58,7 @@
 		padding: 5px 1rem 0 1rem;
 		box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
 	}
+
 	.chat-message .arrow {
 		position: absolute;
 		left: -16px;

@@ -43,9 +43,10 @@
 		<div class="chatRoom">
 			<chatMessage
 				v-for="(item, index) in store.messages"
-				:key="index"
-				>{{ item }}</chatMessage
-			>
+				:key="index">
+				<template #msg>{{ item }}</template>
+				<template #username>{{ store.username }}</template>
+			</chatMessage>
 		</div>
 		<div class="form-control">
 			<input

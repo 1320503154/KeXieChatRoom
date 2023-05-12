@@ -4,12 +4,15 @@ import axios from "axios";
 export const useChatStore = defineStore("chat", {
 	state: () => ({
 		username: "三院科协",
-		avatarSelected: 1,
+		avatarSelected: RandomNum,
 		messages: [],
 	}),
 	getters: {
 		WelcomeUser: (state) => {
 			return "欢迎你的到来!" + state.username;
+		},
+		RandomNum: () => {
+			Math.floor(Math.random() * 10) + 1;
 		},
 	},
 	actions: {

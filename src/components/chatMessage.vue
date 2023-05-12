@@ -9,11 +9,20 @@
 	} from "vue";
 	import { useChatStore } from "../stores/Chat";
 	const store = useChatStore();
+
+	const TouXiangStyles = computed(() => ({
+		width: "50px",
+		height: "50px",
+		background: `url(/头像${store.avatarSelected}.jpg) no-repeat center center`,
+		backgroundSize: "cover",
+		borderRadius: "50%",
+	}));
 </script>
+
 <template>
 	<div>
 		<div class="chat-container">
-			<div class="TouXiang"></div>
+			<div :style="TouXiangStyles"></div>
 			<div class="username"></div>
 			<div class="chat-message">
 				<div class="arrow"></div>

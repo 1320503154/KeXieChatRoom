@@ -1,10 +1,10 @@
 import axios from "axios";
 axios.defaults.timeout = 3000; //3秒的等待时间,3秒到了不再等待response
-axios.defaults.withCredentials = true;
+axios.defaults.withCredentials = true; //跨域相关请求,携带token
 axios.defaults.baseURL = "ws://keixe.space/chat/";
 const getUserList = axios.create();
-export function PostMessage(message) {
-	axios.post({
+export function usePostMessage(message) {
+	return axios.post({
 		url: "msg",
 		data: {
 			type: "msg",
@@ -14,5 +14,5 @@ export function PostMessage(message) {
 	});
 }
 export function getOnlineUserList() {
-	getUserList.get("https://kexie.space/chat/data/onlinelist");
+	return getUserList.get("https://kexie.space/chat/data/onlinelist");
 }

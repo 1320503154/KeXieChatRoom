@@ -25,13 +25,18 @@
 		Welcome();
 	});
 	function AddMsg() {
+		if (chatmsg.value == "") {
+			ElMessage({
+				type: "error",
+				message: "请不要输入空消息!!!",
+				duration: 1500,
+			});
+			return;
+		}
 		let msg = chatmsg.value; //使用另外一个响应式数据替换即可
 		store.addMessage(msg);
 		chatmsg.value = "";
 	}
-	onBeforeMount(() => {
-		store.getApi();
-	});
 </script>
 <template>
 	<div>

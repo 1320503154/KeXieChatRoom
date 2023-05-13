@@ -70,7 +70,7 @@
 <style scoped>
 	.chatRoom {
 		position: relative;
-		width: 95vw;
+		width: 99vw;
 		height: 80vh;
 		margin-bottom: 60px;
 		border-radius: 1rem;
@@ -83,7 +83,7 @@
 		z-index: 0;
 		/* 为什么z-index没有生效?,因为position没有指定 */
 		overflow-y: auto;
-		margin-left: 1.5rem;
+		margin-left: 0.3rem;
 	}
 	.sendBtn {
 		padding: 0.1em 0.25em;
@@ -127,6 +127,7 @@
 	}
 
 	.input {
+		height: 5vh;
 		color: #000000;
 		font-size: 0.9rem;
 		background-color: transparent;

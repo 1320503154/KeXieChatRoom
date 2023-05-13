@@ -1,194 +1,209 @@
 <script setup>
-import {
-  ref,
-  reactive,
-  toRefs,
-  onBeforeMount,
-  onMounted,
-  watch,
-  computed,
-  watchEffect,
-} from "vue";
-import chatMessage from "../components/chatMessage.vue";
-import { useRoute, useRouter } from "vue-router";
-import { ElMessage } from "element-plus";
-import { useChatStore } from "../stores/Chat";
-const chatmsg = ref("");
-const Welcome = () => {
-  ElMessage({
-    message: store.WelcomeUser,
-    type: "success",
-    duration: 1500,
-  });
-};
-const store = useChatStore();
-onMounted(() => {
-  Welcome();
-});
-const containerRef = ref(null);
-function AddMsg() {
-  if (chatmsg.value.trim() == "") {
-    ElMessage({
-      type: "error",
-      message: "请不要输入空消息!!!",
-      duration: 1500,
-    });
-    return;
-  }
-  let msg = chatmsg.value; //使用另外一个响应式数据替换即可
-  store.addMessage(msg);
-  chatmsg.value = "";
-  containerRef.value.scrollTop = containerRef.value.scrollHeight;
-  containerRef.value.scrollTop += 20;
-//   console.log( containerRef.value.scrollTop, containerRef.value.scrollHeight);
-//   watch(
-//     () => store.messages,
-//     () => {
-//       containerRef.value.scrollTop = containerRef.value.scrollHeight + 100;
-//     },
-//     { immediate: true }
-//   )
+	import {
+		ref,
+		reactive,
+		toRefs,
+		onBeforeMount,
+		onMounted,
+		watch,
+		computed,
+		watchEffect,
+	} from "vue";
+	import chatMessage from "../components/chatMessage.vue";
+	import { useRoute, useRouter } from "vue-router";
+	import { ElMessage } from "element-plus";
+	import { useChatStore } from "../stores/Chat";
+	//上面是引入的东西
 
-//   watchEffect(() => {
-//     //   containerRef.value.scrollTop = containerRef.value.scrollHeight;
-// 	  containerRef.value.scrollTop += 20;
-//       console.log(
-//         containerRef.value.scrollTop
-//       );
-//   });
-}
+	const chatmsg = ref("");
+	const Welcome = () => {
+		ElMessage({
+			message: store.WelcomeUser,
+			type: "success",
+			duration: 1500,
+		});
+	};
+
+	//引入仓库
+	const store = useChatStore();
+
+	//组件挂载时的欢迎消息,以后添加获取注册消息
+	onMounted(() => {
+		Welcome();
+	});
+
+	const containerRef = ref(null); //获取dom元素
+	function AddMsg() {
+		if (chatmsg.value.trim() == "") {
+			//去除两端空格
+			ElMessage({
+				type: "error",
+				message: "请不要输入空消息!!!",
+				duration: 1500,
+			});
+			return;
+		}
+		let msg = chatmsg.value; //使用另外一个数据替换即可
+		store.addMessage(msg);
+		chatmsg.value = "";
+
+		//滚动到页面底部
+		containerRef.value.scrollTop = containerRef.value.scrollHeight;
+		containerRef.value.scrollTop += 20;
+		//   console.log( containerRef.value.scrollTop, containerRef.value.scrollHeight);
+		//   watch(
+		//     () => store.messages,
+		//     () => {
+		//       containerRef.value.scrollTop = containerRef.value.scrollHeight + 100;
+		//     },
+		//     { immediate: true }
+		//   )
+
+		//   watchEffect(() => {
+		//     //   containerRef.value.scrollTop = containerRef.value.scrollHeight;
+		// 	  containerRef.value.scrollTop += 20;
+		//       console.log(
+		//         containerRef.value.scrollTop
+		//       );
+		//   });
+	}
 </script>
 <template>
-  <div>
-    <div class="chatRoom" ref="containerRef">
-      <chatMessage v-for="(item, index) in store.messages" :key="index">{{
-        item
-      }}</chatMessage>
-    </div>
-    <div class="message">
-      <div class="form-control">
-        <input
-          class="input input-alt"
-          placeholder="请发送你的消息!"
-          required=""
-          v-model="chatmsg"
-          type="text"
-          @keyup.enter="AddMsg()"
-        />
-        <span class="input-border input-border-alt"></span>
-      </div>
-      <button class="sendBtn" @click="AddMsg()">
-        <span> 发 送 </span>
-      </button>
-    </div>
-  </div>
+	<div>
+		<div
+			class="chatRoom"
+			ref="containerRef">
+			<chatMessage
+				v-for="(item, index) in store.messages"
+				:key="index"
+				>{{ item }}</chatMessage
+			>
+		</div>
+		<div class="message">
+			<div class="form-control">
+				<input
+					class="input input-alt"
+					placeholder="请发送你的消息!"
+					required=""
+					v-model="chatmsg"
+					type="text"
+					@keyup.enter="AddMsg()" />
+				<span class="input-border input-border-alt"></span>
+			</div>
+			<button
+				class="sendBtn"
+				@click="AddMsg()">
+				<span> 发 送 </span>
+			</button>
+		</div>
+	</div>
 </template>
 
 <style scoped>
-.chatRoom {
-  width: 100%;
-  height: 80vh;
-  border-radius: 1rem;
-  background-image: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
-  z-index: -100;
-  overflow-y: auto;
-}
-.sendBtn {
-  padding: 0.1em 0.25em;
-  width: 13em;
-  height: 4.2em;
-  background-color: #212121;
-  border: 0.08em solid #fff;
-  border-radius: 0.3em;
-  font-size: 12px;
-  position: fixed;
-  bottom: 0.5rem;
-  right: 0.9rem;
-  cursor: pointer;
-}
+	.chatRoom {
+		width: 100%;
+		height: 80vh;
+		border-radius: 1rem;
+		background-image: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+		box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+		z-index: -100;
+		overflow-y: auto;
+	}
+	.sendBtn {
+		padding: 0.1em 0.25em;
+		width: 13em;
+		height: 4.2em;
+		background-color: #212121;
+		border: 0.08em solid #fff;
+		border-radius: 0.3em;
+		font-size: 12px;
+		position: fixed;
+		bottom: 0.5rem;
+		right: 0.9rem;
+		cursor: pointer;
+	}
 
-.sendBtn span {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  bottom: 0.4em;
-  width: 8.17em;
-  height: 2.5em;
-  background-image: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
-  border-radius: 0.2em;
-  font-size: 1.5em;
-  font-weight: bold;
-  color: #ffffff;
-  border: 0.08em solid #fff;
-  box-shadow: 0 0.4em 0.1em 0.019em #fff;
-}
+	.sendBtn span {
+		position: relative;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		bottom: 0.4em;
+		width: 8.17em;
+		height: 2.5em;
+		background-image: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
+		border-radius: 0.2em;
+		font-size: 1.5em;
+		font-weight: bold;
+		color: #ffffff;
+		border: 0.08em solid #fff;
+		box-shadow: 0 0.4em 0.1em 0.019em #fff;
+	}
 
-.sendBtn span:hover {
-  transition: all 0.5s;
-  transform: translate(0, 0.4em);
-  box-shadow: 0 0 0 0 #fff;
-}
+	.sendBtn span:hover {
+		transition: all 0.5s;
+		transform: translate(0, 0.4em);
+		box-shadow: 0 0 0 0 #fff;
+	}
 
-.sendBtn span:not(hover) {
-  transition: all 1s;
-}
+	.sendBtn span:not(hover) {
+		transition: all 1s;
+	}
 
-.input {
-  color: #000000;
-  font-size: 0.9rem;
-  background-color: transparent;
-  width: 90%;
-  box-sizing: border-box;
-  padding-inline: 0.5em;
-  padding-block: 0.7em;
-  border: none;
-  border-bottom: var(--border-height) solid var(--border-before-color);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  position: fixed;
-  bottom: 0.5rem;
-}
+	.input {
+		color: #000000;
+		font-size: 0.9rem;
+		background-color: transparent;
+		width: 90%;
+		box-sizing: border-box;
+		padding-inline: 0.5em;
+		padding-block: 0.7em;
+		border: none;
+		border-bottom: var(--border-height) solid var(--border-before-color);
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+		position: fixed;
+		bottom: 0.5rem;
+	}
 
-.input-border {
-  position: absolute;
-  background: var(--border-after-color);
-  width: 0%;
-  height: 2px;
-  bottom: 0;
-  left: 0;
-  position: fixed;
-  bottom: 0.5rem;
-  transition: width 0.3s cubic-bezier(0.6, -0.28, 0.735, 0.045);
-}
+	.input-border {
+		position: absolute;
+		background: var(--border-after-color);
+		width: 0%;
+		height: 2px;
+		bottom: 0;
+		left: 0;
+		position: fixed;
+		bottom: 0.5rem;
+		transition: width 0.3s cubic-bezier(0.6, -0.28, 0.735, 0.045);
+	}
 
-.input:focus {
-  outline: none;
-}
+	.input:focus {
+		outline: none;
+	}
 
-.input:focus + .input-border {
-  width: 100%;
-}
+	.input:focus + .input-border {
+		width: 100%;
+	}
 
-.form-control {
-  position: relative;
-  --width-of-input: 300px;
-}
+	.form-control {
+		position: relative;
+		--width-of-input: 300px;
+	}
 
-.input-alt {
-  font-size: 1.2rem;
-  padding-inline: 1em;
-  padding-block: 0.8em;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
+	.input-alt {
+		font-size: 1.2rem;
+		padding-inline: 1em;
+		padding-block: 0.8em;
+		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	}
 
-.input-border-alt {
-  height: 3px;
-  background: linear-gradient(90deg, #ff6464 0%, #ffbf59 50%, #47c9ff 100%);
-  transition: width 0.4s cubic-bezier(0.42, 0, 0.58, 1);
-}
+	.input-border-alt {
+		height: 3px;
+		background: linear-gradient(90deg, #ff6464 0%, #ffbf59 50%, #47c9ff 100%);
+		transition: width 0.4s cubic-bezier(0.42, 0, 0.58, 1);
+	}
 
-.input-alt:focus + .input-border-alt {
-  width: 90%;
-}
+	.input-alt:focus + .input-border-alt {
+		width: 90%;
+	}
 </style>

@@ -23,6 +23,7 @@
 	const store = useChatStore();
 	onMounted(() => {
 		Welcome();
+		store.getApi();
 	});
 	function AddMsg() {
 		if (chatmsg.value == "") {
@@ -89,7 +90,7 @@
 		height: 80vh;
 		margin-bottom: 60px;
 		border-radius: 1rem;
-		background: url("/聊天背景.jpg") no-repeat center center;
+		background: url("/聊天网页背景.png") no-repeat center center;
 		background-size: cover;
 		backdrop-filter: blur(5px);
 		background-color: rgba(255, 255, 255, 0.8);
@@ -141,7 +142,7 @@
 	}
 
 	.input {
-		height: 5vh;
+		height: 10vh;
 		color: #000000;
 		font-size: 0.9rem;
 		background-color: transparent;

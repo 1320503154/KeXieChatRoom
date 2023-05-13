@@ -41,7 +41,6 @@
 			</div>
 
 			<div class="chat-message">
-				<div class="arrow"></div>
 				<slot name="msg"></slot>
 			</div>
 		</div>
@@ -59,10 +58,10 @@
 		margin-right: 20px;
 	}
 	.TimeLine {
-		color: #fbfef9;
+		color: #000000;
 	}
 	.username {
-		color: #fbfef9;
+		color: #000000;
 	}
 	.TouXiang {
 		width: 50px;
@@ -103,5 +102,16 @@
 		border-color: #000000 #7d71e8 #000000 #000000;
 		z-index: -1;
 		box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+	}
+	.chat-message::before {
+		content: "";
+		position: absolute;
+		z-index: 1;
+		top: 0.5rem;
+		left: 4.6rem;
+		margin-left: -5px;
+		border-width: 10px;
+		border-style: solid;
+		border-color: transparent #7569d9 transparent transparent;
 	}
 </style>

@@ -44,6 +44,7 @@
 	.chat-container {
 		margin-top: 1rem;
 		position: relative;
+		margin-left: 10px;
 		/* border: 1px solid tomato; */
 	}
 	.chat-message {

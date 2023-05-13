@@ -22,7 +22,7 @@
 		return timeStr;
 	});
 	const TouXiangStyles = computed(() => ({
-		float: "left",
+		//float: "left",
 		width: "50px",
 		height: "50px",
 		background: `url(/头像${store.avatarSelected}.jpg) no-repeat center center`,
@@ -34,12 +34,16 @@
 <template>
 	<div>
 		<div class="chat-container">
+			<div class="IDContainer">
+				<div :style="TouXiangStyles"></div>
+				<div class="TimeLine">-{{ NowTime }}-</div>
+				<div class="username"><slot name="username"></slot></div>
+			</div>
+
 			<div class="chat-message">
+				<div class="arrow"></div>
 				<slot name="msg"></slot>
 			</div>
-			<div :style="TouXiangStyles"></div>
-			<div class="TimeLine">{{ NowTime }}</div>
-			<div class="username"><slot name="username"></slot></div>
 		</div>
 	</div>
 </template>
@@ -48,15 +52,17 @@
 	:root {
 		--text-color: #fbfef9;
 	}
+	.IDContainer {
+		/* display: flex; */
+		justify-content: center;
+		align-items: center;
+		margin-right: 20px;
+	}
 	.TimeLine {
-		position: relative;
 		color: #fbfef9;
-		z-index: 5;
 	}
 	.username {
-		position: relative;
 		color: #fbfef9;
-		z-index: 5;
 	}
 	.TouXiang {
 		width: 50px;
@@ -70,15 +76,18 @@
 		margin-top: 1rem;
 		margin-left: 1rem;
 		position: relative;
+		display: flex;
+
 		/* border: 1px solid tomato; */
 	}
 	.chat-message {
-		float: right;
+		align-self: baseline;
+		/* position: absolute; */
 		background-color: #7d71e8;
 		border-radius: 0.5rem;
 		color: #fbfef9;
 		top: 0;
-		left: 3rem;
+		left: 4rem;
 		font-size: 1.5rem;
 		padding: 5px 1rem 0 1rem;
 		box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
@@ -86,13 +95,12 @@
 
 	.chat-message .arrow {
 		position: absolute;
-		left: -16px;
-		bottom: 25px;
+		left: 5.1rem;
 		width: 0;
 		height: 0;
 		font-size: 0;
 		border: solid 8px;
-		border-color: #f2f4f8 #7d71e8 #f2f4f8 #f2f4f8;
+		border-color: #000000 #7d71e8 #000000 #000000;
 		z-index: -1;
 		box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
 	}

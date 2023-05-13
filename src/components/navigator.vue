@@ -17,7 +17,7 @@
 	}
 
 	.container {
-		height: 80px;
+		height: 5vh;
 		display: flex;
 		justify-content: space-around;
 		align-items: center;

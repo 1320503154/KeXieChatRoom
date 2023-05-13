@@ -22,6 +22,7 @@
 		return timeStr;
 	});
 	const TouXiangStyles = computed(() => ({
+		float: "left",
 		width: "50px",
 		height: "50px",
 		background: `url(/头像${store.avatarSelected}.jpg) no-repeat center center`,
@@ -33,13 +34,12 @@
 <template>
 	<div>
 		<div class="chat-container">
+			<div class="chat-message">
+				<slot name="msg"></slot>
+			</div>
 			<div :style="TouXiangStyles"></div>
 			<div class="TimeLine">{{ NowTime }}</div>
 			<div class="username"><slot name="username"></slot></div>
-			<div class="chat-message">
-				<div class="arrow"></div>
-				<slot name="msg"></slot>
-			</div>
 		</div>
 	</div>
 </template>
@@ -49,10 +49,14 @@
 		--text-color: #fbfef9;
 	}
 	.TimeLine {
+		position: relative;
 		color: #fbfef9;
+		z-index: 5;
 	}
 	.username {
+		position: relative;
 		color: #fbfef9;
+		z-index: 5;
 	}
 	.TouXiang {
 		width: 50px;
@@ -69,13 +73,13 @@
 		/* border: 1px solid tomato; */
 	}
 	.chat-message {
-		position: absolute;
+		float: right;
 		background-color: #7d71e8;
 		border-radius: 0.5rem;
 		color: #fbfef9;
 		top: 0;
-		left: 58px;
-		font-size: 2rem;
+		left: 3rem;
+		font-size: 1.5rem;
 		padding: 5px 1rem 0 1rem;
 		box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
 	}

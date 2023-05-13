@@ -7,12 +7,18 @@
 		onMounted,
 		watch,
 		computed,
+		onUpdated,
 	} from "vue";
 	import chatMessage from "../components/chatMessage.vue";
 	import { useRoute, useRouter } from "vue-router";
 	import { ElMessage } from "element-plus";
 	import { useChatStore } from "../stores/Chat";
+	//引入相关文件
+
+	//定义相关信息
 	const chatmsg = ref("");
+	const messagesEnd = ref(null); //首先，在模板中添加 ref 属性获取最后一条消息的 DOM 元素，是实现滚动到底部功能的前提
+	//欢迎成员进入
 	const Welcome = () => {
 		ElMessage({
 			message: store.WelcomeUser,
@@ -20,13 +26,28 @@
 			duration: 1500,
 		});
 	};
+
+	//引入pinia仓库
 	const store = useChatStore();
+
+	//当组件挂载时
 	onMounted(() => {
 		Welcome();
 		store.getApi();
 	});
+	//监听消息更新
+	onUpdated(() => {
+		//使用 onUpdated 钩子函数，监听 store 中的 messages 数组是否更新。
+		//每当 messages 更新时，onUpdated 钩子函数会执行，messagesEnd 变量的值会更新，指向最新的最后一条消息的 DOM 元素。
+		if ("scrollBehavior" in document.documentElement.style) {
+			messagesEnd.value.scrollIntoView({ behavior: "smooth" });
+		} else {
+			messagesEnd.value.scrollIntoView();
+		}
+	});
+	//添加消息
 	function AddMsg() {
-		if (chatmsg.value == "") {
+		if (chatmsg.value.trim() == "") {
 			ElMessage({
 				type: "error",
 				message: "请不要输入空消息!!!",
@@ -34,7 +55,7 @@
 			});
 			return;
 		}
-		let msg = chatmsg.value; //使用另外一个响应式数据替换即可
+		let msg = chatmsg.value; //使用另外一个数据替换即可
 		store.addMessage(msg);
 		chatmsg.value = "";
 	}
@@ -48,6 +69,8 @@
 				<template #msg>{{ item }}</template>
 				<template #username>{{ store.username }}</template>
 			</chatMessage>
+			<div ref="messagesEnd"></div>
+			<!-- 当到达消息的底部时 -->
 		</div>
 		<div class="form-control">
 			<input

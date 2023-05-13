@@ -2,7 +2,7 @@
 	<div class="container">
 		<div class="text">在线人数：{{ count }}</div>
 		<div class="bt">
-			<button>登出</button>
+			<button class="out-btn">登出</button>
 		</div>
 	</div>
 </template>
@@ -50,7 +50,7 @@
 		}
 	}
 
-	button {
+	.out-btn {
 		width: 100px;
 		height: 40px;
 		font-size: 20px;
@@ -61,5 +61,10 @@
 		border: none;
 		background-image: linear-gradient(to left, #e1dcfd, #dbfbf0);
 		text-align: center;
+		cursor: pointer;
+	}
+	.out-btn:active {
+		transform: scale(0.9);
+		box-shadow: inset 0px 0.1em 0.6em #5ff8fb;
 	}
 </style>

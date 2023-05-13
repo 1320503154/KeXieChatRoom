@@ -69,17 +69,21 @@
 
 <style scoped>
 	.chatRoom {
-		width: 100vw;
-		height: 90vh;
+		position: relative;
+		width: 95vw;
+		height: 80vh;
+		margin-bottom: 60px;
 		border-radius: 1rem;
 		background: url("/聊天背景.jpg") no-repeat center center;
 		background-size: cover;
 		backdrop-filter: blur(5px);
 		background-color: rgba(255, 255, 255, 0.8);
 		/* background-image: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); */
-		box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
-		z-index: -100;
+		box-shadow: 0px 2px 10px 5px rgba(0, 0, 0, 0.25);
+		z-index: 0;
+		/* 为什么z-index没有生效?,因为position没有指定 */
 		overflow-y: auto;
+		margin-left: 1.5rem;
 	}
 	.sendBtn {
 		padding: 0.1em 0.25em;
@@ -159,7 +163,6 @@
 
 	.form-control {
 		position: relative;
-		--width-of-input: 300px;
 	}
 
 	.input-alt {

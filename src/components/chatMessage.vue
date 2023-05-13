@@ -1,4 +1,5 @@
 <script setup>
+	import { min } from "lodash";
 	import {
 		ref,
 		reactive,
@@ -9,7 +10,17 @@
 	} from "vue";
 	import { useChatStore } from "../stores/Chat";
 	const store = useChatStore();
-
+	const date = ref(new Date());
+	const NowTime = computed(() => {
+		const hours = date.value.getHours();
+		const minutes = date.value.getMinutes();
+		const seconds = date.value.getSeconds();
+		const timeStr = `${hours}:${minutes < 10 ? "0" : ""}${minutes}:${
+			seconds < 10 ? "0" : ""
+		}${seconds}`;
+		//三目运算符判断,保证分钟和秒钟的格式是"xx:xx:xx"
+		return timeStr;
+	});
 	const TouXiangStyles = computed(() => ({
 		width: "50px",
 		height: "50px",
@@ -23,6 +34,7 @@
 	<div>
 		<div class="chat-container">
 			<div :style="TouXiangStyles"></div>
+			<div class="TimeLine">{{ NowTime }}</div>
 			<div class="username"><slot name="username"></slot></div>
 			<div class="chat-message">
 				<div class="arrow"></div>
@@ -33,6 +45,12 @@
 </template>
 
 <style scoped>
+	:root {
+		--text-color: #fbfef9;
+	}
+	.TimeLine {
+		color: #fbfef9;
+	}
 	.username {
 		color: #fbfef9;
 	}
@@ -71,7 +89,7 @@
 		font-size: 0;
 		border: solid 8px;
 		border-color: #f2f4f8 #7d71e8 #f2f4f8 #f2f4f8;
-		z-index: 0;
+		z-index: -1;
 		box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
 	}
 </style>

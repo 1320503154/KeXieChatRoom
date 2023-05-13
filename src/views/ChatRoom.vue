@@ -39,7 +39,7 @@
 	}
 </script>
 <template>
-	<div>
+	<div class="container">
 		<div class="chatRoom">
 			<chatMessage
 				v-for="(item, index) in store.messages"
@@ -47,30 +47,33 @@
 				>{{ item }}</chatMessage
 			>
 		</div>
-		<div class="form-control">
-			<input
-				class="input input-alt"
-				placeholder="请发送你的消息!"
-				required=""
-				v-model="chatmsg"
-				type="text"
-				@keyup.enter="AddMsg()" />
-			<span class="input-border input-border-alt"></span>
+		<div class="message">
+			<div class="form-control">
+				<input
+					class="input input-alt"
+					placeholder="请发送你的消息!"
+					required=""
+					v-model="chatmsg"
+					type="text"
+					@keyup.enter="AddMsg()" />
+				<span class="input-border input-border-alt"></span>
+			</div>
+			<button
+				class="sendBtn"
+				@click="AddMsg()">
+				<span> 发 送 </span>
+			</button>
 		</div>
-
-		<button
-			class="sendBtn"
-			@click="AddMsg()">
-			<span> 发 送 </span>
-		</button>
+		
+		
 	</div>
 </template>
 
 <style scoped>
+
 	.chatRoom {
-		width: 100vw;
-		height: 90vh;
-		border: #ff6464 1px solid;
+		width: 100%;
+		height: 80vh;
 		border-radius: 1rem;
 		background-image: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
 		box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
@@ -97,7 +100,7 @@
 		justify-content: center;
 		align-items: center;
 		bottom: 0.4em;
-		width: 8.25em;
+		width: 8.17em;
 		height: 2.5em;
 		background-image: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
 		border-radius: 0.2em;

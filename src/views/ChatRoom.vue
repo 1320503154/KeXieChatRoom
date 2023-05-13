@@ -68,6 +68,21 @@
 </template>
 
 <style scoped>
+	/* 淡入淡出效果 */
+	.car-view-enter-active {
+		transition: all 0.3s ease-out;
+		/* animation: bounce-in 0.5s; */
+	}
+	.car-view-leave-active {
+		/* animation: bounce-in 0.5 reverse; */
+		transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+	}
+	.car-view-enter-from,
+	.car-view-leave-to {
+		transform: translateX(20px);
+		opacity: 0;
+	}
+	/* 淡入淡出效果 */
 	.chatRoom {
 		position: relative;
 		width: 99vw;
@@ -80,7 +95,7 @@
 		background-color: rgba(255, 255, 255, 0.8);
 		/* background-image: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); */
 		box-shadow: 0px 2px 10px 5px rgba(0, 0, 0, 0.25);
-		z-index: 0;
+		z-index: 1;
 		/* 为什么z-index没有生效?,因为position没有指定 */
 		overflow-y: auto;
 		margin-left: 0.3rem;
@@ -107,7 +122,6 @@
 		bottom: 0.4em;
 		width: 8.25em;
 		height: 2.5em;
-		background-image: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
 		border-radius: 0.2em;
 		font-size: 1.5em;
 		font-weight: bold;

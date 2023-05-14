@@ -19,7 +19,7 @@
 	const chatmsg = ref("");
 	const messagesEnd = ref(null); //首先，在模板中添加 ref 属性获取最后一条消息的 DOM 元素，是实现滚动到底部功能的前提
 	const socket = new WebSocket("ws://localhost:8080");
-
+	const containerRef = ref(null);
 	//欢迎成员进入
 	const Welcome = () => {
 		ElMessage({
@@ -42,6 +42,13 @@
 			// 读取 Blob 对象中的内容，并转换为字符串
 			reader.readAsText(blob);
 		});
+	}
+	// 判断是否滑倒底部
+	function isScrolledToBottom() {
+		const container = containerRef.value;
+		return (
+			container.scrollTop == container.scrollHeight - container.clientHeight
+		);
 	}
 	//引入pinia仓库
 	const store = useChatStore();
@@ -69,10 +76,13 @@
 	onUpdated(() => {
 		//使用 onUpdated 钩子函数，监听 store 中的 messages 数组是否更新。
 		//每当 messages 更新时，onUpdated 钩子函数会执行，messagesEnd 变量的值会更新，指向最新的最后一条消息的 DOM 元素。
-		if ("scrollBehavior" in document.documentElement.style) {
-			messagesEnd.value.scrollIntoView({ behavior: "smooth" });
-		} else {
-			messagesEnd.value.scrollIntoView();
+		if (isScrolledToBottom()) {
+			// 将消息滑倒底部
+			if ("scrollBehavior" in document.documentElement.style) {
+				messagesEnd.value.scrollIntoView({ behavior: "smooth" });
+			} else {
+				messagesEnd.value.scrollIntoView();
+			}
 		}
 	});
 	//添加消息
@@ -92,7 +102,9 @@
 </script>
 <template>
 	<div>
-		<div class="chatRoom">
+		<div
+			class="chatRoom"
+			ref="containerRef">
 			<chatMessage
 				v-for="(item, index) in store.messages"
 				:key="index">

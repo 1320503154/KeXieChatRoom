@@ -18,6 +18,8 @@
 	//定义相关信息
 	const chatmsg = ref("");
 	const messagesEnd = ref(null); //首先，在模板中添加 ref 属性获取最后一条消息的 DOM 元素，是实现滚动到底部功能的前提
+	const socket = new WebSocket("ws://localhost:8080");
+
 	//欢迎成员进入
 	const Welcome = () => {
 		ElMessage({
@@ -29,11 +31,17 @@
 
 	//引入pinia仓库
 	const store = useChatStore();
-
+	function CreateSocket() {
+		// 监听 WebSocket 的打开事件
+		socket.addEventListener("open", (event) => {
+			console.log("WebSocket connection opened.");
+		});
+	}
 	//当组件挂载时
 	onMounted(() => {
 		Welcome();
 		store.getApi();
+		CreateSocket();
 	});
 	//监听消息更新
 	onUpdated(() => {
@@ -55,9 +63,17 @@
 			});
 			return;
 		}
-		let msg = chatmsg.value; //使用另外一个数据替换即可
-		store.addMessage(msg);
+		let chatMsg = chatmsg.value.toString();
+		socket.send(chatMsg);
 		chatmsg.value = "";
+		socket.addEventListener("message", (event) => {
+			console.log("Received message:", event.data);
+
+			// 在 messages 数组中添加新的消息
+			store.addMessage(event.data);
+		});
+
+		socket.close;
 	}
 </script>
 <template>

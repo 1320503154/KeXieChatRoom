@@ -8,14 +8,17 @@
 		watch,
 		computed,
 		watchEffect,
+		onUpdated,
 	} from "vue";
 	import chatMessage from "../components/chatMessage.vue";
 	import { useRoute, useRouter } from "vue-router";
 	import { ElMessage } from "element-plus";
 	import { useChatStore } from "../stores/Chat";
-	//上面是引入的东西
+
+	const store = useChatStore();
 
 	const chatmsg = ref("");
+
 	const Welcome = () => {
 		ElMessage({
 			message: store.WelcomeUser,
@@ -24,18 +27,19 @@
 		});
 	};
 
-	//引入仓库
-	const store = useChatStore();
-
-	//组件挂载时的欢迎消息,以后添加获取注册消息
 	onMounted(() => {
 		Welcome();
 	});
 
-	const containerRef = ref(null); //获取dom元素
+	const containerRef = ref(null);
+	const messagesEnd = ref(null);
+
+	onUpdated(() => {
+		containerRef.value.scrollTop = containerRef.value.scrollHeight;
+	});
+
 	function AddMsg() {
 		if (chatmsg.value.trim() == "") {
-			//去除两端空格
 			ElMessage({
 				type: "error",
 				message: "请不要输入空消息!!!",
@@ -46,26 +50,6 @@
 		let msg = chatmsg.value; //使用另外一个数据替换即可
 		store.addMessage(msg);
 		chatmsg.value = "";
-
-		//滚动到页面底部
-		containerRef.value.scrollTop = containerRef.value.scrollHeight;
-		containerRef.value.scrollTop += 20;
-		//   console.log( containerRef.value.scrollTop, containerRef.value.scrollHeight);
-		//   watch(
-		//     () => store.messages,
-		//     () => {
-		//       containerRef.value.scrollTop = containerRef.value.scrollHeight + 100;
-		//     },
-		//     { immediate: true }
-		//   )
-
-		//   watchEffect(() => {
-		//     //   containerRef.value.scrollTop = containerRef.value.scrollHeight;
-		// 	  containerRef.value.scrollTop += 20;
-		//       console.log(
-		//         containerRef.value.scrollTop
-		//       );
-		//   });
 	}
 </script>
 <template>
@@ -78,6 +62,8 @@
 				:key="index"
 				>{{ item }}</chatMessage
 			>
+			<!-- 最后一条消息的DOM元素 -->
+			<div class="messagesEnd"></div>
 		</div>
 		<div class="message">
 			<div class="form-control">

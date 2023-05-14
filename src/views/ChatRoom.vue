@@ -8,6 +8,7 @@ import {
   watch,
   computed,
   watchEffect,
+  onUpdated
 } from "vue";
 import chatMessage from "../components/chatMessage.vue";
 import { useRoute, useRouter } from "vue-router";
@@ -26,6 +27,10 @@ onMounted(() => {
   Welcome();
 });
 const containerRef = ref(null);
+const messagesEnd = ref(null)
+onUpdated(()=> {
+	containerRef.value.scrollTop = containerRef.value.scrollHeight;
+})
 function AddMsg() {
   if (chatmsg.value.trim() == "") {
     ElMessage({
@@ -38,24 +43,6 @@ function AddMsg() {
   let msg = chatmsg.value; //使用另外一个响应式数据替换即可
   store.addMessage(msg);
   chatmsg.value = "";
-  containerRef.value.scrollTop = containerRef.value.scrollHeight;
-  containerRef.value.scrollTop += 20;
-//   console.log( containerRef.value.scrollTop, containerRef.value.scrollHeight);
-//   watch(
-//     () => store.messages,
-//     () => {
-//       containerRef.value.scrollTop = containerRef.value.scrollHeight + 100;
-//     },
-//     { immediate: true }
-//   )
-
-//   watchEffect(() => {
-//     //   containerRef.value.scrollTop = containerRef.value.scrollHeight;
-// 	  containerRef.value.scrollTop += 20;
-//       console.log(
-//         containerRef.value.scrollTop
-//       );
-//   });
 }
 </script>
 <template>
@@ -64,6 +51,8 @@ function AddMsg() {
       <chatMessage v-for="(item, index) in store.messages" :key="index">{{
         item
       }}</chatMessage>
+	  <!-- 最后一条消息的DOM元素 -->
+	  <div class="messagesEnd"></div>
     </div>
     <div class="message">
       <div class="form-control">

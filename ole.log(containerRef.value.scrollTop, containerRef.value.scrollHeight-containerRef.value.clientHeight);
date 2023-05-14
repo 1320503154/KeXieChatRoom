@@ -1,0 +1,74 @@
+[33mcommit d8fdb16c23b3a5ba8f53d8f620f3f20340dcfacf[m[33m ([m[1;36mHEAD -> [m[1;32mdev[m[33m, [m[1;31morigin/dev[m[33m)[m
+Author: Jenny_T <1273368446@qq.com>
+Date:   Sun May 14 10:06:36 2023 +0800
+
+    消息滑倒最后一条ok
+
+[33mcommit 3510c3c1fee6980a8cd2fc01bc0cf5cc3e46bcc0[m
+Author: Jenny_T <1273368446@qq.com>
+Date:   Sat May 13 20:42:06 2023 +0800
+
+    消息滑倒底端差一条
+
+[33mcommit e0e92edc383ddac22258539bc07c87d705382b04[m
+Author: Jenny_T <1273368446@qq.com>
+Date:   Sat May 13 13:25:10 2023 +0800
+
+    change1
+
+[33mcommit df409b57c2434365976c917ebd8e739639f88d92[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m
+Author: Jenny_T <1273368446@qq.com>
+Date:   Fri May 12 21:34:46 2023 +0800
+
+    change-first
+
+[33mcommit 0339b427e90fc62d32b8bfbe1c6f792248878e4c[m
+Author: 1320503154 <1320503154@qq.com>
+Date:   Fri May 12 20:39:30 2023 +0800
+
+    实现随头像id改变头像功能
+    
+    实现随头像id改变头像功能
+    设置广播局域网--host 0.0.0.0
+
+[33mcommit fefe406c320e3256be0eb6cd2293a067a2ba12d7[m
+Author: 1320503154 <1320503154@qq.com>
+Date:   Fri May 12 16:17:30 2023 +0800
+
+    Update server.js
+    
+    大致添加了发送消息得框架,还是得return这个函数,return!!!!
+
+[33mcommit 3f5c506e81881de466605b038569372c2b1e3105[m
+Author: 1320503154 <1320503154@qq.com>
+Date:   Thu May 11 20:58:14 2023 +0800
+
+    Update server.js
+    
+    暂时发现api的bug
+
+[33mcommit 33c22e625cf17e22280f89d3cfa51020792b6d62[m
+Author: 1320503154 <1320503154@qq.com>
+Date:   Thu May 11 20:50:13 2023 +0800
+
+    大概完成demo,等待ui设计
+    
+    UI设计!!!!!!!!!!!!!
+
+[33mcommit 2b57b680d1d2027064e3d7f494700d271eafe24d[m
+Author: 1320503154 <1320503154@qq.com>
+Date:   Thu May 11 12:39:58 2023 +0800
+
+    提交文件
+
+[33mcommit 114c8f0b6e15964658215fa4a89552ab6f1c8e13[m
+Author: 1320503154 <1320503154@qq.com>
+Date:   Thu May 11 12:39:00 2023 +0800
+
+    Update README.md
+
+[33mcommit 98ba9e304253ce065fdad371b00f93f1944f424a[m
+Author: 1320503154 <1320503154@qq.com>
+Date:   Thu May 11 12:37:39 2023 +0800
+
+    Initial commit

@@ -25,11 +25,24 @@ const Welcome = () => {
 const store = useChatStore();
 onMounted(() => {
   Welcome();
+		containerRef.value.scrollTop = containerRef.value.scrollHeight
 });
 const containerRef = ref(null);
 const messagesEnd = ref(null)
+// 判断是否滑倒底部
+function isScrolledToBottom() {
+  const container = containerRef.value
+  return container.scrollTop == container.scrollHeight - container.clientHeight - 66;
+}
 onUpdated(()=> {
-	containerRef.value.scrollTop = containerRef.value.scrollHeight;
+	if(isScrolledToBottom()) {
+		// 将消息滑倒底部
+		containerRef.value.scrollTop = containerRef.value.scrollHeight;
+	}
+	else {
+
+	}
+	console.log(containerRef.value.scrollTop, containerRef.value.scrollHeight-containerRef.value.clientHeight);
 })
 function AddMsg() {
   if (chatmsg.value.trim() == "") {

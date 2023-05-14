@@ -14,11 +14,7 @@
 	import { useRoute, useRouter } from "vue-router";
 	import { ElMessage } from "element-plus";
 	import { useChatStore } from "../stores/Chat";
-
-	const store = useChatStore();
-
 	const chatmsg = ref("");
-
 	const Welcome = () => {
 		ElMessage({
 			message: store.WelcomeUser,
@@ -26,18 +22,32 @@
 			duration: 1500,
 		});
 	};
-
+	const store = useChatStore();
 	onMounted(() => {
 		Welcome();
-	});
-
-	const containerRef = ref(null);
-	const messagesEnd = ref(null);
-
-	onUpdated(() => {
 		containerRef.value.scrollTop = containerRef.value.scrollHeight;
 	});
-
+	const containerRef = ref(null);
+	const messagesEnd = ref(null);
+	// 判断是否滑倒底部
+	function isScrolledToBottom() {
+		const container = containerRef.value;
+		return (
+			container.scrollTop ==
+			container.scrollHeight - container.clientHeight - 66
+		);
+	}
+	onUpdated(() => {
+		if (isScrolledToBottom()) {
+			// 将消息滑倒底部
+			containerRef.value.scrollTop = containerRef.value.scrollHeight;
+		} else {
+		}
+		console.log(
+			containerRef.value.scrollTop,
+			containerRef.value.scrollHeight - containerRef.value.clientHeight
+		);
+	});
 	function AddMsg() {
 		if (chatmsg.value.trim() == "") {
 			ElMessage({
@@ -47,7 +57,7 @@
 			});
 			return;
 		}
-		let msg = chatmsg.value; //使用另外一个数据替换即可
+		let msg = chatmsg.value; //使用另外一个响应式数据替换即可
 		store.addMessage(msg);
 		chatmsg.value = "";
 	}

@@ -7,14 +7,21 @@
 	<navigator />
 	<div class="navBar">
 		<RouterLink
+			to="/login"
+			class="About"
+			active-class="active"
+			>注册</RouterLink
+		>
+		<RouterLink
 			to="/"
 			class="About"
 			active-class="active"
 			>主聊天室</RouterLink
 		>
 	</div>
-	<div class="Main-container"></div>
-	<RouterView />
+	<div class="Main-container">
+		<RouterView />
+	</div>
 </template>
 
 <style scoped>

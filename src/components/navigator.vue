@@ -2,14 +2,24 @@
 	<div class="container">
 		<div class="text">在线人数：{{ count }}</div>
 		<div class="bt">
-			<button class="out-btn">登出</button>
+			<button
+				class="out-btn"
+				@click="handleClickOut">
+				登出
+			</button>
 		</div>
 	</div>
 </template>
 
 <script setup>
 	import { ref } from "vue";
+	import { useRouter } from "vue-router";
 	const count = ref(0);
+	const router = useRouter();
+	function handleClickOut() {
+		localStorage.removeItem("username");
+		router.push("/");
+	}
 </script>
 
 <style scoped>

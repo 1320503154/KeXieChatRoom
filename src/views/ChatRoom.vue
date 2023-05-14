@@ -8,7 +8,7 @@ import {
   watch,
   computed,
   watchEffect,
-  onUpdated
+  onUpdated,
 } from "vue";
 import chatMessage from "../components/chatMessage.vue";
 import { useRoute, useRouter } from "vue-router";
@@ -25,25 +25,30 @@ const Welcome = () => {
 const store = useChatStore();
 onMounted(() => {
   Welcome();
-		containerRef.value.scrollTop = containerRef.value.scrollHeight
+  containerRef.value.scrollTop = containerRef.value.scrollHeight;
 });
 const containerRef = ref(null);
-const messagesEnd = ref(null)
+const messagesEnd = ref(null);
+const messageHeight = ref(0)
+// 得到子组件的消息高度
+const getMessageHeight = (height) => {
+	messageHeight.value = height
+}
 // 判断是否滑倒底部
 function isScrolledToBottom() {
-  const container = containerRef.value
-  return container.scrollTop == container.scrollHeight - container.clientHeight - 66;
+  const container = containerRef.value;
+  return (
+    container.scrollTop == container.scrollHeight - container.clientHeight - messageHeight.value
+  );
 }
-onUpdated(()=> {
-	if(isScrolledToBottom()) {
-		// 将消息滑倒底部
-		containerRef.value.scrollTop = containerRef.value.scrollHeight;
-	}
-	else {
-
-	}
-	console.log(containerRef.value.scrollTop, containerRef.value.scrollHeight-containerRef.value.clientHeight);
-})
+onUpdated(() => {
+  if (isScrolledToBottom()) {
+    // 将消息滑倒底部
+    containerRef.value.scrollTop = containerRef.value.scrollHeight;
+  } else {
+  }
+  // console.log(containerRef.value.scrollTop, containerRef.value.scrollHeight-containerRef.value.clientHeight);
+});
 function AddMsg() {
   if (chatmsg.value.trim() == "") {
     ElMessage({
@@ -61,11 +66,13 @@ function AddMsg() {
 <template>
   <div>
     <div class="chatRoom" ref="containerRef">
-      <chatMessage v-for="(item, index) in store.messages" :key="index">{{
-        item
-      }}</chatMessage>
-	  <!-- 最后一条消息的DOM元素 -->
-	  <div class="messagesEnd"></div>
+      <chatMessage 
+	  v-for="(item, index) in store.messages" 
+	  :key="index"
+	  @messageHeight="getMessageHeight"
+	  >{{ item }}</chatMessage>
+      <!-- 最后一条消息的DOM元素 -->
+      <div class="messagesEnd"></div>
     </div>
     <div class="message">
       <div class="form-control">

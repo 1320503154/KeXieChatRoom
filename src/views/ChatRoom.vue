@@ -28,7 +28,21 @@
 			duration: 1500,
 		});
 	};
-
+	//函数读取Blob对象转化为字符串
+	function readBlobAsString(blob) {
+		return new Promise((resolve, reject) => {
+			const reader = new FileReader(); // 创建 FileReader 对象
+			reader.addEventListener("loadend", () => {
+				if (reader.error) {
+					reject(reader.error); // 读取出错，抛出异常
+				} else {
+					resolve(reader.result); // 读取成功，返回字符串结果
+				}
+			});
+			// 读取 Blob 对象中的内容，并转换为字符串
+			reader.readAsText(blob);
+		});
+	}
 	//引入pinia仓库
 	const store = useChatStore();
 	function CreateSocket() {
@@ -36,11 +50,19 @@
 		socket.addEventListener("open", (event) => {
 			console.log("WebSocket connection opened.");
 		});
+		socket.addEventListener("message", (event) => {
+			readBlobAsString(event.data)
+				.then((str) => {
+					store.messages.push(str);
+				})
+				.catch((error) => {
+					console.error(error);
+				});
+		});
 	}
 	//当组件挂载时
 	onMounted(() => {
 		Welcome();
-		store.getApi();
 		CreateSocket();
 	});
 	//监听消息更新
@@ -63,17 +85,9 @@
 			});
 			return;
 		}
-		let chatMsg = chatmsg.value.toString();
+		let chatMsg = chatmsg.value;
 		socket.send(chatMsg);
 		chatmsg.value = "";
-		socket.addEventListener("message", (event) => {
-			console.log("Received message:", event.data);
-
-			// 在 messages 数组中添加新的消息
-			store.addMessage(event.data);
-		});
-
-		socket.close;
 	}
 </script>
 <template>

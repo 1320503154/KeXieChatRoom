@@ -107,7 +107,7 @@
 		position: absolute;
 		z-index: 1;
 		top: 0.5rem;
-		left: 4.6rem;
+		left: 4.8rem;
 		margin-left: -5px;
 		border-width: 10px;
 		border-style: solid;

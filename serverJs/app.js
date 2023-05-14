@@ -18,7 +18,7 @@ server.on("connection", function (socket) {
 
 		// 广播消息给所有连接的客户端
 		server.clients.forEach(function (client) {
-			if (client.readyState === WebSocket.OPEN) {
+			if (client.readyState === WebSocket.OPEN && client !== socket) {
 				client.send(message);
 			}
 		});

@@ -57,7 +57,7 @@
 			});
 			return;
 		}
-		let msg = chatmsg.value; //使用数据替换即可
+		let msg = chatmsg.value; //使用另外一个响应式数据替换即可
 		store.addMessage(msg);
 		chatmsg.value = "";
 	}

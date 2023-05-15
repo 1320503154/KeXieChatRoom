@@ -65,7 +65,6 @@
 				let JsStr = JSON.parse(str);
 				console.log("str.message::: ", JsStr.message);
 				store.messages.push(JsStr.message);
-				store.avatarSelected = JsStr.userId;
 			});
 		});
 	}

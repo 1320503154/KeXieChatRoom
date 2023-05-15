@@ -4,7 +4,9 @@
 </script>
 
 <template>
-	<navigator />
+	<div class="Nav-container">
+		<navigator />
+	</div>
 	<div class="navBar">
 		<RouterLink
 			to="/login"
@@ -25,6 +27,10 @@
 </template>
 
 <style scoped>
+	.Nav-container {
+		top: 0;
+		position: sticky;
+	}
 	.Main-container {
 		display: flex;
 		justify-content: center;

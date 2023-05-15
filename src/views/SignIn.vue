@@ -66,7 +66,7 @@
 			return;
 		}
 		localStorage.setItem("username", _username);
-		store.username = _username.value;
+		store.username = _username;
 		username.value = "";
 		router.push("/");
 	}

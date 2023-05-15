@@ -22,6 +22,8 @@
 	const containerRef = ref(null);
 	//欢迎成员进入
 	const Welcome = () => {
+		let NowUserName = localStorage.getItem("username");
+		store.username = NowUserName;
 		ElMessage({
 			message: store.WelcomeUser,
 			type: "success",
@@ -58,19 +60,17 @@
 			console.log("WebSocket connection opened.");
 		});
 		socket.addEventListener("message", (event) => {
-			readBlobAsString(event.data)
-				.then((str) => {
-					store.messages.push(str);
-				})
-				.catch((error) => {
-					console.error(error);
-				});
+			readBlobAsString(event.data).then((str) => {
+				console.log(str);
+				let JsStr = JSON.parse(str);
+				console.log("str.message::: ", JsStr.message);
+				store.messages.push(JsStr.message);
+			});
 		});
 	}
 	//当组件挂载时
 	onMounted(() => {
 		Welcome();
-		CreateSocket();
 	});
 	//监听消息更新
 	onUpdated(() => {
@@ -96,9 +96,16 @@
 			return;
 		}
 		let chatMsg = chatmsg.value;
-		socket.send(chatMsg);
+		socket.send(
+			JSON.stringify({
+				user: localStorage.getItem("username"),
+				message: chatMsg,
+				userId: store.avatarSelected,
+			})
+		);
 		chatmsg.value = "";
 	}
+	CreateSocket();
 </script>
 <template>
 	<div>

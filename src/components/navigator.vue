@@ -1,6 +1,5 @@
 <template>
 	<div class="container">
-		<div class="text">在线人数：{{ count }}</div>
 		<div class="bt">
 			<button
 				class="out-btn"
@@ -8,6 +7,7 @@
 				登出
 			</button>
 		</div>
+		<div class="text">在线人数：{{ count }}</div>
 	</div>
 </template>
 
@@ -18,7 +18,7 @@
 	const router = useRouter();
 	function handleClickOut() {
 		localStorage.removeItem("username");
-		router.push("/");
+		router.push("/login");
 	}
 </script>
 

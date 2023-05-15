@@ -6,6 +6,7 @@
 		onMounted,
 		watch,
 		computed,
+		defineEmits
 	} from "vue";
 	import { useChatStore } from "../stores/Chat";
 	const store = useChatStore();
@@ -28,11 +29,38 @@
 		backgroundSize: "cover",
 		borderRadius: "50%",
 	}));
+
+	// 获取消息高度
+	const chatMessage = ref(null)
+	let height = 0;
+	let marginTop = 0;
+	let marginBottom = 0;
+	let paddingTop  = 0;
+	let paddingBottom = 0;
+	const emit = defineEmits(["messageHeight"])
+	const emitMessageHeight = (height) => {
+		emit("messageHeight", height)
+	}
+	onMounted(()=> {
+		// 计算一条消息的总高度
+		if (chatMessage.value) {
+			const style = getComputedStyle(chatMessage.value);
+		height = chatMessage.value.clientHeight
+		marginTop = parseInt(style.marginTop)
+		marginBottom = parseInt(style.marginBottom)
+		paddingTop = parseInt(style.paddingTop)
+		paddingBottom = parseInt(style.paddingBottom)
+		emitMessageHeight(totalHeight())
+		}
+	})
+	const totalHeight = () => {
+		return height + marginTop +marginBottom + paddingTop + paddingBottom;
+	}
 </script>
 
 <template>
 	<div>
-		<div class="chat-container">
+		<div class="chat-container" ref="chatMessage">
 			<div class="IDContainer">
 				<div :style="TouXiangStyles"></div>
 				<div class="TimeLine">-{{ NowTime }}-</div>

@@ -65,6 +65,7 @@
 				let JsStr = JSON.parse(str);
 				console.log("str.message::: ", JsStr.message);
 				store.messages.push(JsStr.message);
+				store.avatarSelected = JsStr.userId;
 			});
 		});
 	}
@@ -76,13 +77,12 @@
 	onUpdated(() => {
 		//使用 onUpdated 钩子函数，监听 store 中的 messages 数组是否更新。
 		//每当 messages 更新时，onUpdated 钩子函数会执行，messagesEnd 变量的值会更新，指向最新的最后一条消息的 DOM 元素。
-		if (isScrolledToBottom()) {
-			// 将消息滑倒底部
-			if ("scrollBehavior" in document.documentElement.style) {
-				messagesEnd.value.scrollIntoView({ behavior: "smooth" });
-			} else {
-				messagesEnd.value.scrollIntoView();
-			}
+
+		// 将消息滑倒底部
+		if ("scrollBehavior" in document.documentElement.style) {
+			messagesEnd.value.scrollIntoView({ behavior: "smooth" });
+		} else {
+			messagesEnd.value.scrollIntoView();
 		}
 	});
 	//添加消息
@@ -105,6 +105,7 @@
 		);
 		chatmsg.value = "";
 	}
+	//初始化Websocket
 	CreateSocket();
 </script>
 <template>

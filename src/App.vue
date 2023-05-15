@@ -29,6 +29,8 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
+		padding: 0 !important;
+		margin: 0;
 	}
 	.navBar {
 		display: flex;

@@ -7,6 +7,7 @@
 		onMounted,
 		watch,
 		computed,
+		watchEffect,
 		onUpdated,
 	} from "vue";
 	import chatMessage from "../components/chatMessage.vue";
@@ -71,6 +72,26 @@
 	//当组件挂载时
 	onMounted(() => {
 		Welcome();
+		containerRef.value.scrollTop = containerRef.value.scrollHeight;
+	});
+	// 判断是否滑倒底部
+	function isScrolledToBottom() {
+		const container = containerRef.value;
+		return (
+			container.scrollTop ==
+			container.scrollHeight - container.clientHeight - 66
+		);
+	}
+	onUpdated(() => {
+		if (isScrolledToBottom()) {
+			// 将消息滑倒底部
+			containerRef.value.scrollTop = containerRef.value.scrollHeight;
+		} else {
+		}
+		console.log(
+			containerRef.value.scrollTop,
+			containerRef.value.scrollHeight - containerRef.value.clientHeight
+		);
 	});
 	//监听消息更新
 	onUpdated(() => {
@@ -119,24 +140,24 @@
 				<template #username>{{ store.username }}</template>
 			</chatMessage>
 			<div ref="messagesEnd"></div>
-			<!-- 当到达消息的底部时 -->
 		</div>
-		<div class="form-control">
-			<input
-				class="input input-alt"
-				placeholder="请发送你的消息!"
-				required=""
-				v-model="chatmsg"
-				type="text"
-				@keyup.enter="AddMsg()" />
-			<span class="input-border input-border-alt"></span>
+		<div class="message">
+			<div class="form-control">
+				<input
+					class="input input-alt"
+					placeholder="请发送你的消息!"
+					required=""
+					v-model="chatmsg"
+					type="text"
+					@keyup.enter="AddMsg()" />
+				<span class="input-border input-border-alt"></span>
+			</div>
+			<button
+				class="sendBtn"
+				@click="AddMsg()">
+				<span> 发 送 </span>
+			</button>
 		</div>
-
-		<button
-			class="sendBtn"
-			@click="AddMsg()">
-			<span> 发 送 </span>
-		</button>
 	</div>
 </template>
 
@@ -193,7 +214,7 @@
 		justify-content: center;
 		align-items: center;
 		bottom: 0.4em;
-		width: 8.25em;
+		width: 8.17em;
 		height: 2.5em;
 		border-radius: 0.2em;
 		font-size: 1.5em;

@@ -6,6 +6,7 @@
 		onMounted,
 		watch,
 		computed,
+		defineEmits,
 	} from "vue";
 	import { useChatStore } from "../stores/Chat";
 	const store = useChatStore();
@@ -20,6 +21,32 @@
 		//三目运算符判断,保证分钟和秒钟的格式是"xx:xx:xx"
 		return timeStr;
 	});
+	const chatMessage = ref(null);
+	let height = 0;
+	let marginTop = 0;
+	let marginBottom = 0;
+	let paddingTop = 0;
+	let paddingBottom = 0;
+	const emit = defineEmits(["messageHeight"]);
+	const emitMessageHeight = (height) => {
+		emit("messageHeight", height);
+	};
+	onMounted(() => {
+		// 计算一条消息的总高度
+		if (chatMessage.value) {
+			const style = getComputedStyle(chatMessage.value);
+			height = chatMessage.value.clientHeight;
+			marginTop = parseInt(style.marginTop);
+			marginBottom = parseInt(style.marginBottom);
+			paddingTop = parseInt(style.paddingTop);
+			paddingBottom = parseInt(style.paddingBottom);
+			emitMessageHeight(totalHeight());
+		}
+	});
+	const totalHeight = () => {
+		return height + marginTop + marginBottom + paddingTop + paddingBottom;
+	};
+
 	const TouXiangStyles = computed(() => ({
 		//float: "left",
 		width: "50px",
@@ -37,10 +64,6 @@
 				<div :style="TouXiangStyles"></div>
 				<div class="TimeLine">-{{ NowTime }}-</div>
 				<div class="username"><slot name="username"></slot></div>
-			</div>
-
-			<div class="chat-message">
-				<slot name="msg"></slot>
 			</div>
 		</div>
 	</div>

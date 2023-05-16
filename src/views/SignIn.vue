@@ -55,7 +55,7 @@
 	onMounted(() => {
 		username.value = localStorage.getItem("username");
 		if (username.value) {
-			router.push("/");
+			router.push("/chatRoom");
 			return;
 		}
 	});
@@ -63,18 +63,19 @@
 		event.preventDefault();
 		const _username = username.value.trim(); //trim()方法用于处理空格
 		if (!matchReg(regex, _username)) {
-			Err.value = "请输入正确的用户名,应该是2-8个英文,中文,或者数字的组合";
+			Err.value =
+				"请输入正确的用户名,应该是2-8个英文,中文,或者数字的组合,没有符号~";
 			ElMessage({
 				type: "error",
 				message: Err.value,
-				duration: 1500,
+				duration: 3000,
 			});
 			return;
 		}
 		localStorage.setItem("username", _username);
 		store.username = _username;
 		username.value = "";
-		router.push("/");
+		router.push("/chatRoom");
 	}
 	const data = [
 		{

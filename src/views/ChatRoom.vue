@@ -20,6 +20,7 @@
 	const messagesEnd = ref(null); //首先，在模板中添加 ref 属性获取最后一条消息的 DOM 元素，是实现滚动到底部功能的前提
 	const socket = new WebSocket("ws://localhost:8080");
 	const containerRef = ref(null);
+	const router = useRouter();
 	//欢迎成员进入
 	const Welcome = () => {
 		ElMessage({
@@ -28,6 +29,15 @@
 			duration: 1500,
 		});
 	};
+	function isLogin() {
+		let NowUserName = localStorage.getItem("username");
+		if (NowUserName) {
+			store.username = NowUserName;
+			router.push("/chatRoom");
+		} else {
+			router.push("/Login");
+		}
+	}
 	//函数读取Blob对象转化为字符串
 	function readBlobAsString(blob) {
 		return new Promise((resolve, reject) => {
@@ -82,6 +92,7 @@
 	}
 	//当组件挂载时
 	onMounted(() => {
+		isLogin();
 		Welcome();
 		containerRef.value.scrollTop = containerRef.value.scrollHeight;
 	});
@@ -182,7 +193,7 @@
 		position: relative;
 		width: 99vw;
 		max-width: 1200px;
-		height: 80vh;
+		height: 75vh;
 		margin-bottom: 1rem;
 		background: transparent;
 

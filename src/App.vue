@@ -5,7 +5,7 @@
 
 <template>
 	<navigator />
-	<div class="navBar">
+	<!-- <div class="navBar">
 		<RouterLink
 			to="/login"
 			class="About"
@@ -17,8 +17,8 @@
 			class="About"
 			active-class="active"
 			>主聊天室</RouterLink
-		>
-	</div>
+		>暂时废弃
+	</div> -->
 	<div class="Main-container">
 		<RouterView />
 	</div>

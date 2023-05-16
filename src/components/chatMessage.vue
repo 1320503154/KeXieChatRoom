@@ -6,7 +6,7 @@
 		onMounted,
 		watch,
 		computed,
-		defineEmits
+		defineEmits,
 	} from "vue";
 	import { useChatStore } from "../stores/Chat";
 	const store = useChatStore();
@@ -31,45 +31,53 @@
 	}));
 
 	// 获取消息高度
-	const chatMessage = ref(null)
+	const chatMessage = ref(null);
 	let height = 0;
 	let marginTop = 0;
 	let marginBottom = 0;
-	let paddingTop  = 0;
+	let paddingTop = 0;
 	let paddingBottom = 0;
-	const emit = defineEmits(["messageHeight"])
+	const emit = defineEmits(["messageHeight"]);
 	const emitMessageHeight = (height) => {
-		emit("messageHeight", height)
-	}
-	onMounted(()=> {
+		emit("messageHeight", height);
+	};
+	onMounted(() => {
 		// 计算一条消息的总高度
 		if (chatMessage.value) {
 			const style = getComputedStyle(chatMessage.value);
-		height = chatMessage.value.clientHeight
-		marginTop = parseInt(style.marginTop)
-		marginBottom = parseInt(style.marginBottom)
-		paddingTop = parseInt(style.paddingTop)
-		paddingBottom = parseInt(style.paddingBottom)
-		emitMessageHeight(totalHeight())
+			height = chatMessage.value.clientHeight;
+			marginTop = parseInt(style.marginTop);
+			marginBottom = parseInt(style.marginBottom);
+			paddingTop = parseInt(style.paddingTop);
+			paddingBottom = parseInt(style.paddingBottom);
+			emitMessageHeight(totalHeight());
 		}
-	})
+	});
 	const totalHeight = () => {
-		return height + marginTop +marginBottom + paddingTop + paddingBottom;
-	}
+		return height + marginTop + marginBottom + paddingTop + paddingBottom;
+	};
 </script>
-
 <template>
-	<div>
-		<div class="chat-container" ref="chatMessage">
-			<div class="IDContainer">
+	<!-- 时间关系，没有做深度调优和代码简化，诸位看着办，大部分仅是二次封装进行布局 -->
+	<div
+		class="msg"
+		ref="chatMessage">
+		<div class="main">
+			<div class="metainfo">
 				<div :style="TouXiangStyles"></div>
-				<div class="TimeLine">-{{ NowTime }}-</div>
-				<div class="username"><slot name="username"></slot></div>
+				<div class="username">
+					<slot name="username"></slot>
+				</div>
 			</div>
-
-			<div class="chat-message">
-				<slot name="msg"></slot>
+			<div class="decoration"></div>
+			<div class="content">
+				<div class="chat-message">
+					<slot name="msg"></slot>
+				</div>
 			</div>
+		</div>
+		<div class="time-stamp">
+			<div class="TimeLine">-{{ NowTime }}-</div>
 		</div>
 	</div>
 </template>
@@ -78,67 +86,70 @@
 	:root {
 		--text-color: #fbfef9;
 	}
-	.IDContainer {
-		/* display: flex; */
-		justify-content: center;
-		align-items: center;
-		margin-right: 20px;
-	}
-	.TimeLine {
-		color: #000000;
-	}
-	.username {
-		color: #000000;
-	}
-	.TouXiang {
-		width: 50px;
-		height: 50px;
-		background: url(/头像1.jpg) no-repeat center center;
-		background-size: cover;
-		/* 6 */
-		border-radius: 50%;
-	}
-	.chat-container {
+
+	.msg {
 		margin-top: 1rem;
 		margin-left: 1rem;
-		position: relative;
+	}
+
+	.main {
 		display: flex;
+		justify-content: center;
+		max-width: fit-content;
+		align-items: center;
+		flex-direction: column;
+		padding: 1rem;
 
-		/* border: 1px solid tomato; */
-	}
-	.chat-message {
-		align-self: baseline;
-		/* position: absolute; */
-		background-color: #7d71e8;
+		/* border: 1px solid #212121; */
 		border-radius: 0.5rem;
-		color: #fbfef9;
-		top: 0;
-		left: 4rem;
-		font-size: 1.5rem;
-		padding: 5px 1rem 0 1rem;
-		box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+		box-shadow: 3px 3px 7px 0px rgba(0, 0, 0, 0.329);
+		gap: 0.5rem;
+		backdrop-filter: blur(18px);
 	}
 
-	.chat-message .arrow {
-		position: absolute;
-		left: 5.1rem;
-		width: 0;
-		height: 0;
-		font-size: 0;
-		border: solid 8px;
-		border-color: #000000 #7d71e8 #000000 #000000;
-		z-index: -1;
-		box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+	.metainfo {
+		display: flex;
+		justify-content: start;
+		align-items: center;
+		gap: 2rem;
+		align-self: flex-start;
 	}
-	.chat-message::before {
-		content: "";
-		position: absolute;
-		z-index: 1;
-		top: 0.5rem;
-		left: 4.8rem;
-		margin-left: -5px;
-		border-width: 10px;
-		border-style: solid;
-		border-color: transparent #7569d9 transparent transparent;
+
+	.username {
+		font-size: 1.5rem;
+	}
+
+	.content {
+		align-self: flex-start;
+		text-align: left;
+		text-indent: 2rem;
+		font-size: 1.8rem;
+	}
+
+	.time-stamp {
+		opacity: 0.7;
+		text-shadow: 5px 5px 0px 5px rgba(0, 0, 0, 0.356);
+	}
+
+	.decoration {
+		width: 80%;
+		height: 1px;
+		max-width: 400px;
+		border-radius: 2px;
+		background-color: #212121;
+		box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.096);
+
+		align-self: flex-start;
+		animation: 0.6s ease appearance;
+	}
+
+	@keyframes appearance {
+		from {
+			width: 0;
+		}
+
+		to {
+			width: 80%;
+		}
 	}
 </style>

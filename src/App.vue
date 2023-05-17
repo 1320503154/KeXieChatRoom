@@ -62,6 +62,12 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
+		background-image: linear-gradient(to bottom right, transparent, mistyrose),
+			url("/聊天网页背景.png");
+		background-color: #212121;
+		background-repeat: no-repeat;
+		background-size: cover;
+		background-attachment: fixed;
 	}
 	.navBar {
 		display: flex;

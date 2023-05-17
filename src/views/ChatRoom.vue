@@ -100,15 +100,15 @@
 	//JSON.parse()
 </script>
 <template>
-	<div
-		class="room"
-		ref="containerRef">
+	<div class="room">
 		<div
 			class="msg-stage"
 			ref="containerRef">
 			<chatMessage
 				v-for="(item, index) in store.messages"
-				:key="index">
+				:key="index"
+				@messageHeight="getMessageHeight"
+				>
 				<template #msg>{{ item }}</template>
 				<template #username>{{ store.username }}</template>
 			</chatMessage>
@@ -137,30 +137,24 @@
 <style scoped>
 	.room {
 		width: 110vw;
-		height: 100vh;
+		height: 93vh;
 		overflow: hidden;
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
 
-		background-image: linear-gradient(to bottom right, transparent, mistyrose),
-			url("/聊天网页背景.png");
-		background-color: #212121;
-		background-repeat: no-repeat;
-		background-size: cover;
-		background-attachment: fixed;
+		
 	}
 
 	.msg-stage {
 		position: relative;
 		width: 99vw;
 		max-width: 1200px;
-		height: 75vh;
-		margin-bottom: 1rem;
+		height: 81vh;
+		margin-bottom: 4.5rem;
 		background: transparent;
-
-		z-index: 1;
+		z-index: 0;
 		overflow-y: auto;
 		margin-left: 0.3rem;
 	}
@@ -180,7 +174,7 @@
 		height: 4rem;
 		display: block;
 		margin-left: 0.6rem;
-
+    	line-height: 4rem;
 		border-radius: 4rem;
 		background-color: #212121;
 		font-size: 3rem;

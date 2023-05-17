@@ -6,7 +6,6 @@
 		onMounted,
 		watch,
 		computed,
-		defineEmits,
 	} from "vue";
 	import { useChatStore } from "../stores/Chat";
 	const store = useChatStore();

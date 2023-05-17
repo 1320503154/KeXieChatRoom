@@ -137,7 +137,7 @@
 <style scoped>
 	.room {
 		width: 110vw;
-		height: 93vh;
+		height: 92.6vh;
 		overflow: hidden;
 		display: flex;
 		flex-direction: column;

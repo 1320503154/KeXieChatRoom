@@ -156,7 +156,6 @@
 		backdrop-filter: blur(5px);
 		background-color: rgba(255, 255, 255, 0.8);
 		box-shadow: 0px 2px 10px 5px rgba(0, 0, 0, 0.25);
-		margin-left: 0.3rem;
 	}
 
 	form {
@@ -200,7 +199,7 @@
 	p {
 		position: absolute;
 		top: -70px;
-		right: -80px;
+		right: -11px;
 		transform: rotate(340deg);
 		font-size: 22px;
 		white-space: nowrap;

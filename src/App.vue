@@ -1,6 +1,39 @@
 <script setup>
 	import { RouterLink, RouterView } from "vue-router";
 	import navigator from "./components/navigator.vue";
+	import { useChatStore } from "./stores/Chat";
+	const socket = new WebSocket("ws://localhost:8080");
+	const store = useChatStore();
+	function readBlobAsString(blob) {
+		return new Promise((resolve, reject) => {
+			const reader = new FileReader(); // 创建 FileReader 对象
+			reader.addEventListener("loadend", () => {
+				if (reader.error) {
+					reject(reader.error); // 读取出错，抛出异常
+				} else {
+					resolve(reader.result); // 读取成功，返回字符串结果
+				}
+			});
+			// 读取 Blob 对象中的内容，并转换为字符串
+			reader.readAsText(blob);
+		});
+	}
+	function CreateSocket() {
+		// 监听 WebSocket 的打开事件
+		socket.addEventListener("open", (event) => {
+			console.log("WebSocket connection opened.");
+		});
+		socket.addEventListener("message", (event) => {
+			readBlobAsString(event.data)
+				.then((str) => {
+					store.messages.push(str);
+				})
+				.catch((error) => {
+					console.error(error);
+				});
+		});
+	}
+	CreateSocket();
 </script>
 
 <template>

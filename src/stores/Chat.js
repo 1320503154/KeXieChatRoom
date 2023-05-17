@@ -5,11 +5,13 @@ export const useChatStore = defineStore(
 	"chat",
 	{
 		state: () => ({
+			//data
 			username: "Default",
 			avatarSelected: Math.floor(Math.random() * 10) + 1,
 			messages: [],
 		}),
 		getters: {
+			//computed
 			WelcomeUser: (state) => {
 				return "欢迎你的到来!" + state.username;
 			},
@@ -18,6 +20,7 @@ export const useChatStore = defineStore(
 			},
 		},
 		actions: {
+			//methods
 			async getApi() {
 				try {
 					const res = await axios.get("https://api.wrdan.com/hitokoto");

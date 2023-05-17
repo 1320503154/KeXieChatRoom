@@ -103,7 +103,7 @@
 		return index;
 	};
 
-	const join = new WebSocket("ws://keixe.space/chat/");
+	// const join = new WebSocket("ws://keixe.space/chat/");
 	// console.log('ws连接状态：' + join.readyState);
 	const request = {
 		name: username,

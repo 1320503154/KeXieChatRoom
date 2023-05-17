@@ -10,15 +10,16 @@
 		onUpdated,
 	} from "vue";
 	import chatMessage from "../components/chatMessage.vue";
+
 	import { useRoute, useRouter } from "vue-router";
 	import { ElMessage } from "element-plus";
 	import { useChatStore } from "../stores/Chat";
 	//引入相关文件
 
 	//定义相关信息
+	const socket = new WebSocket("ws://localhost:8080");
 	const chatmsg = ref("");
 	const messagesEnd = ref(null); //首先，在模板中添加 ref 属性获取最后一条消息的 DOM 元素，是实现滚动到底部功能的前提
-	const socket = new WebSocket("ws://localhost:8080");
 	const containerRef = ref(null);
 	const router = useRouter();
 	//欢迎成员进入
@@ -28,6 +29,8 @@
 			type: "success",
 			duration: 1500,
 		});
+		let TouXiangID = localStorage.getItem("avatarSelected");
+		store.avatarSelected = TouXiangID;
 	};
 	function isLogin() {
 		let NowUserName = localStorage.getItem("username");
@@ -39,20 +42,6 @@
 		}
 	}
 	//函数读取Blob对象转化为字符串
-	function readBlobAsString(blob) {
-		return new Promise((resolve, reject) => {
-			const reader = new FileReader(); // 创建 FileReader 对象
-			reader.addEventListener("loadend", () => {
-				if (reader.error) {
-					reject(reader.error); // 读取出错，抛出异常
-				} else {
-					resolve(reader.result); // 读取成功，返回字符串结果
-				}
-			});
-			// 读取 Blob 对象中的内容，并转换为字符串
-			reader.readAsText(blob);
-		});
-	}
 	const messageHeight = ref(0);
 	// 得到子组件的消息高度
 	const getMessageHeight = (height) => {
@@ -73,23 +62,7 @@
 	}
 	//引入pinia仓库
 	const store = useChatStore();
-	function CreateSocket() {
-		// 监听 WebSocket 的打开事件
-		socket.addEventListener("open", (event) => {
-			console.log("WebSocket connection opened.");
-		});
-		socket.addEventListener("message", (event) => {
-			console.log("监听消息事件!!!");
-			readBlobAsString(event.data)
-				.then((str) => {
-					console.log(str);
-					store.messages.push(str);
-				})
-				.catch((error) => {
-					console.error(error);
-				});
-		});
-	}
+
 	//当组件挂载时
 	onMounted(() => {
 		isLogin();
@@ -118,7 +91,13 @@
 		socket.send(chatMsg);
 		chatmsg.value = "";
 	}
-	CreateSocket();
+	//传给后端的消息:
+	// let chatMsgList = JSON.stringify({
+	// 	message: chatmsg.value,
+	// 	username: localStorage.getItem("username"),
+	// 	avatarSelected: localStorage.getItem("avatarSelected"),
+	// });
+	//JSON.parse()
 </script>
 <template>
 	<div
@@ -138,6 +117,7 @@
 		</div>
 		<div class="intent-area">
 			<input
+				autofocus
 				class="input input-alt"
 				placeholder="请发送你的消息!"
 				required=""
@@ -155,23 +135,6 @@
 </template>
 
 <style scoped>
-	/* 淡入淡出效果 */
-	.car-view-enter-active {
-		transition: all 0.3s ease-out;
-		/* animation: bounce-in 0.5s; */
-	}
-
-	.car-view-leave-active {
-		/* animation: bounce-in 0.5 reverse; */
-		transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
-	}
-
-	.car-view-enter-from,
-	.car-view-leave-to {
-		transform: translateX(20px);
-		opacity: 0;
-	}
-
 	.room {
 		width: 110vw;
 		height: 100vh;
@@ -182,7 +145,7 @@
 		align-items: center;
 
 		background-image: linear-gradient(to bottom right, transparent, mistyrose),
-			url("public/聊天网页背景.png");
+			url("/聊天网页背景.png");
 		background-color: #212121;
 		background-repeat: no-repeat;
 		background-size: cover;

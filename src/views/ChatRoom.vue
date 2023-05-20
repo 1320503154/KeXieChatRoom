@@ -17,7 +17,7 @@
 	//引入相关文件
 
 	//定义相关信息
-	const socket = new WebSocket("ws://localhost:8080");
+	const socket = new WebSocket("ws://10.33.28.51/chat");
 	const chatmsg = ref("");
 	const messagesEnd = ref(null); //首先，在模板中添加 ref 属性获取最后一条消息的 DOM 元素，是实现滚动到底部功能的前提
 	const containerRef = ref(null);

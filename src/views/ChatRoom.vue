@@ -16,12 +16,17 @@
 	import { useChatStore } from "../stores/Chat";
 	//引入相关文件
 
-	//定义相关信息
-	const socket = new WebSocket("ws://10.33.28.51/chat");
-	const chatmsg = ref("");
-	const messagesEnd = ref(null); //首先，在模板中添加 ref 属性获取最后一条消息的 DOM 元素，是实现滚动到底部功能的前提
-	const containerRef = ref(null);
+	//引入pinia仓库
+	const store = useChatStore();
 	const router = useRouter();
+
+	//当组件挂载时
+	onMounted(() => {
+		isLogin();
+		Welcome();
+		containerRef.value.scrollTop = containerRef.value.scrollHeight;
+	});
+
 	//欢迎成员进入
 	const Welcome = () => {
 		ElMessage({
@@ -32,6 +37,8 @@
 		let TouXiangID = localStorage.getItem("avatarSelected");
 		store.avatarSelected = TouXiangID;
 	};
+
+	//判断是否登录
 	function isLogin() {
 		let NowUserName = localStorage.getItem("username");
 		if (NowUserName) {
@@ -41,34 +48,6 @@
 			router.push("/Login");
 		}
 	}
-	//函数读取Blob对象转化为字符串
-	const messageHeight = ref(0);
-	// 得到子组件的消息高度
-	const getMessageHeight = (height) => {
-		messageHeight.value = height;
-	};
-	// 判断是否滑倒底部
-	function isScrolledToBottom() {
-		const container = containerRef.value;
-		return (
-			parseInt(container.scrollTop) ==
-			container.scrollHeight - container.clientHeight - messageHeight.value
-		);
-	}
-	function isFirstScrollMessage() {
-		const container = containerRef.value;
-		if (container.scrollHeight <= container.clientHeight + messageHeight.value)
-			return true;
-	}
-	//引入pinia仓库
-	const store = useChatStore();
-
-	//当组件挂载时
-	onMounted(() => {
-		isLogin();
-		Welcome();
-		containerRef.value.scrollTop = containerRef.value.scrollHeight;
-	});
 	//监听消息更新
 	onUpdated(() => {
 		//使用 onUpdated 钩子函数，监听 store 中的 messages 数组是否更新。
@@ -77,6 +56,43 @@
 			containerRef.value.scrollTop = containerRef.value.scrollHeight;
 		}
 	});
+
+	//新建WebSocket链接
+	const socket = new WebSocket("ws://10.33.28.51/chat");
+	// 监听 WebSocket 的打开事件
+	socket.addEventListener("open", (event) => {
+		console.log("WebSocket链接建立成功!");
+	});
+	//监听后端发送的消息事件
+	socket.addEventListener("message", (event) => {
+		console.log("event::: ", event);
+	});
+	const chatmsg = ref(""); //输入框双向绑定的消息~
+	const messagesEnd = ref(null); //首先，在模板中添加 ref 属性获取最后一条消息的 DOM 元素，是实现滚动到底部功能的前提
+
+	const containerRef = ref(null); //判断是否在底部的dom
+
+	const messageHeight = ref(0);
+	// 得到子组件的消息高度
+	const getMessageHeight = (height) => {
+		messageHeight.value = height;
+	};
+
+	// 判断是否滑倒底部
+	function isScrolledToBottom() {
+		const container = containerRef.value;
+		return (
+			parseInt(container.scrollTop) ==
+			container.scrollHeight - container.clientHeight - messageHeight.value
+		);
+	}
+
+	function isFirstScrollMessage() {
+		const container = containerRef.value;
+		if (container.scrollHeight <= container.clientHeight + messageHeight.value)
+			return true;
+	}
+
 	//添加消息
 	function AddMsg() {
 		if (chatmsg.value.trim() == "") {
@@ -87,17 +103,17 @@
 			});
 			return;
 		}
+
 		let chatMsg = chatmsg.value;
-		socket.send(chatMsg);
+		let chatMsgList = JSON.stringify({
+			type: "msg",
+			msg: chatMsg,
+			sender: localStorage.getItem("ID"),
+		});
+
+		socket.send(chatMsgList);
 		chatmsg.value = "";
 	}
-	//传给后端的消息:
-	// let chatMsgList = JSON.stringify({
-	// 	message: chatmsg.value,
-	// 	username: localStorage.getItem("username"),
-	// 	avatarSelected: localStorage.getItem("avatarSelected"),
-	// });
-	//JSON.parse()
 </script>
 <template>
 	<div class="room">
@@ -107,8 +123,7 @@
 			<chatMessage
 				v-for="(item, index) in store.messages"
 				:key="index"
-				@messageHeight="getMessageHeight"
-				>
+				@messageHeight="getMessageHeight">
 				<template #msg>{{ item }}</template>
 				<template #username>{{ store.username }}</template>
 			</chatMessage>
@@ -143,8 +158,6 @@
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
-
-		
 	}
 
 	.msg-stage {
@@ -174,7 +187,7 @@
 		height: 4rem;
 		display: block;
 		margin-left: 0.6rem;
-    	line-height: 4rem;
+		line-height: 4rem;
 		border-radius: 4rem;
 		background-color: #212121;
 		font-size: 3rem;

@@ -1,9 +1,9 @@
 <script setup>
 	import { ElMessage } from "element-plus";
-	// @=src,@/router===src/router
 	import { ref, onMounted } from "vue";
 	import { useRouter } from "vue-router";
 	import { useChatStore } from "../stores/Chat.js";
+	import axios from "axios";
 	import avatar0 from "/头像1.jpg";
 	import avatar1 from "/头像2.jpg";
 	import avatar2 from "/头像3.jpg";
@@ -14,39 +14,81 @@
 	import avatar7 from "/头像8.jpg";
 	import avatar8 from "/头像9.jpg";
 	import avatar9 from "/头像10.jpg";
+	onMounted(() => {
+		username.value = localStorage.getItem("username");
+		if (username.value) {
+			router.push("/chatRoom");
+			return;
+		}
+	});
+	const Join = axios.create({
+		baseURL: "/api",
+		timeout: 3000,
+		withCredentials: true,
+	});
 	const store = useChatStore();
 	const username = ref("");
 	const avatarSelected = ref("");
 	const Err = ref("");
 	const router = useRouter();
-
 	const regex = /^[\u4e00-\u9fa5a-zA-Z0-9]{2,8}$/; //正则表达式,检测是否是合法的用户名
-
+	function readBlobAsString(blob) {
+		return new Promise((resolve, reject) => {
+			const reader = new FileReader(); // 创建 FileReader 对象
+			reader.addEventListener("loadend", () => {
+				if (reader.error) {
+					reject(reader.error); // 读取出错，抛出异常
+				} else {
+					resolve(reader.result); // 读取成功，返回字符串结果
+				}
+			});
+			// 读取 Blob 对象中的内容，并转换为字符串
+			reader.readAsText(blob);
+		});
+	}
 	function matchReg(regex, str) {
 		return regex.test(str);
 	}
-	onMounted(() => {
-		username.value = localStorage.getItem("username");
-		if (username.value) {
-			router.push("/");
-			return;
-		}
-	});
+
 	function handleEnterBtnClick(event) {
 		event.preventDefault();
 		const _username = username.value.trim(); //trim()方法用于处理空格
 		const _index = data[index].number;
 		if (!matchReg(regex, _username)) {
-			Err.value = "请输入正确的用户名,应该是2-8个英文,中文,或者数字的组合";
+			Err.value =
+				"请输入正确的用户名,应该是2-8个英文,中文,或者数字的组合,不要有符号!!!";
+			ElMessage({
+				type: "error",
+				message: Err,
+				duration: 2000,
+			});
 			return;
 		}
-		localStorage.setItem("username", _username);
-		localStorage.setItem("avatarSelected", _index);
-		store.avatarSelected = _index;
-		avatarSelected.value = "";
-		store.username = _username;
-		username.value = "";
-		router.push("/chatRoom");
+		let request = {
+			name: _username,
+			avatarSelected: _index,
+		};
+		Join.post("/login", request)
+			.then((res) => {
+				console.log(res);
+				if (res.data.statuts == "sucessed") {
+					localStorage.setItem("username", res.data.name);
+					localStorage.setItem("avatarSelected", res.data.avatarSelected);
+					localStorage.setItem("ID", res.data.id);
+				} else if (res.data.statuts == "failedAtDuplicationOfName") {
+					ElMessage({
+						type: "error",
+						message: "你取得用户名和别人重名了",
+						duration: 2000,
+					});
+				}
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+		setTimeout(() => {
+			router.push("/chatRoom");
+		}, 1000);
 	}
 
 	const data = [
@@ -102,13 +144,12 @@
 		avatar.value = data[index].avatar;
 		return index;
 	};
-
 	// const join = new WebSocket("ws://keixe.space/chat/");
 	// console.log('ws连接状态：' + join.readyState);
-	const request = {
-		name: username,
-		avatarSelected: avatarSelected,
-	};
+	// const request = {
+	// 	name: username,
+	// 	avatarSelected: avatarSelected,
+	// };
 	//后端写好之后可以打开这两个注释，一个是用于测试连接状态，一个是发送信息。
 	// join.send(request)
 </script>

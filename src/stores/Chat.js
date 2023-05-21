@@ -5,7 +5,6 @@ export const useChatStore = defineStore(
 	"chat",
 	{
 		state: () => ({
-			//data
 			username: "Default",
 			avatarSelected: Math.floor(Math.random() * 10) + 1,
 			messages: [],

@@ -1,18 +1,27 @@
 import axios from "axios";
 axios.defaults.timeout = 3000; //3秒的等待时间,3秒到了不再等待response
 axios.defaults.withCredentials = true; //跨域相关请求,携带token
-axios.defaults.baseURL = "ws://keixe.space/chat/";
-const getUserList = axios.create();
-export function usePostMessage(message) {
-	return axios.post({
-		url: "msg",
+axios.defaults.baseURL = "/api"; //这几个没啥用,用的都是getUserList这个axios实例
+const getUserList = axios.create({
+	baseURL: "/api",
+	timeout: 3000,
+});
+export function useJoin(username, avatarSelected) {
+	return getUserList.post({
+		url: "login",
 		data: {
-			type: "msg",
-			sender: 5,
-			msg: message,
+			name: username,
+			avatarSelected: avatarSelected,
 		},
 	});
 }
-export function getOnlineUserList() {
+export function UseGetOnlineUserList() {
 	return getUserList.get("https://kexie.space/chat/data/onlinelist");
+}
+export function useSendMsg(msg, ID) {
+	return getUserList.post({
+		type: "msg",
+		sender: ID,
+		msg: msg,
+	});
 }

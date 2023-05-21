@@ -14,6 +14,7 @@
 	import avatar7 from "/头像8.jpg";
 	import avatar8 from "/头像9.jpg";
 	import avatar9 from "/头像10.jpg";
+	import axios from "axios";
 	const store = useChatStore();
 	const username = ref("");
 	const avatarSelected = ref("");
@@ -47,6 +48,19 @@
 		store.username = _username;
 		username.value = "";
 		router.push("/chatRoom");
+		console.log(_username);
+		axios.post('/api/login', {
+            "name": _username,    
+        	"avatarSelected": _index 
+        }).then(
+            res => {
+                console.log('请求成功', res.data);
+                console.log(JSON.stringify(res.data));
+            },
+            err => {
+                console.log('请求失败', err.message);
+            }
+        )
 	}
 
 	const data = [
@@ -103,7 +117,7 @@
 		return index;
 	};
 
-	// const join = new WebSocket("ws://keixe.space/chat/");
+	// const join = new WebSocket("ws://10.33.28.51/chat");
 	// console.log('ws连接状态：' + join.readyState);
 	const request = {
 		name: username,

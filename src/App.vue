@@ -2,8 +2,8 @@
 	import { RouterLink, RouterView } from "vue-router";
 	import navigator from "./components/navigator.vue";
 	import { useChatStore } from "./stores/Chat";
-	import axios from 'axios'
-	const socket = new WebSocket("ws://10.33.28.51/chat");
+	import axios from "axios";
+	// const socket = new WebSocket("ws://10.33.28.51/chat");
 	const store = useChatStore();
 	function readBlobAsString(blob) {
 		return new Promise((resolve, reject) => {
@@ -34,7 +34,7 @@
 				});
 		});
 	}
-	CreateSocket();
+	// CreateSocket();
 	// const fetchData = async () => {
 	//   try {
 	//     const response = await axios.get('/api/login'); // 发起网络请求
@@ -45,20 +45,22 @@
 	//   }
 	// };
 	// axios.defaults.baseURL = "/api";
-	function signIn(){
-        axios.post('/api/login', {
-            "name": "hhh",    
-        	"avatarSelected": "2"   
-        }).then(
-            res => {
-                console.log('请求成功', res.data);
-                console.log(JSON.stringify(res.data));
-            },
-            err => {
-                console.log('请求失败', err.message);
-            }
-        )
-    }
+	function signIn() {
+		axios
+			.post("/api/login", {
+				name: "hhh",
+				avatarSelected: "2",
+			})
+			.then(
+				(res) => {
+					console.log("请求成功", res.data);
+					console.log(JSON.stringify(res.data));
+				},
+				(err) => {
+					console.log("请求失败", err.message);
+				}
+			);
+	}
 </script>
 
 <template>

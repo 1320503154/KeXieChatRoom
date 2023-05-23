@@ -58,16 +58,16 @@
 	});
 
 	//新建WebSocket链接
-	let ID = localStorage.getItem("ID");
-	const socket = new WebSocket(`ws://10.33.28.51/chat?ID=${ID}`);
-	// 监听 WebSocket 的打开事件
-	socket.addEventListener("open", (event) => {
-		console.log("WebSocket链接建立成功!");
-	});
-	//监听后端发送的消息事件
-	socket.addEventListener("message", (event) => {
-		console.log("event::: ", event);
-	});
+	let username = localStorage.getItem("username");
+	// const socket = new WebSocket(`ws://10.33.28.51/chat/name=${username}`);
+	// // 监听 WebSocket 的打开事件
+	// socket.addEventListener("open", (event) => {
+	// 	console.log("WebSocket链接建立成功!");
+	// });
+	// //监听后端发送的消息事件
+	// socket.addEventListener("message", (event) => {
+	// 	console.log("event::: ", event);
+	// });
 	const chatmsg = ref(""); //输入框双向绑定的消息~
 	const messagesEnd = ref(null); //首先，在模板中添加 ref 属性获取最后一条消息的 DOM 元素，是实现滚动到底部功能的前提
 
@@ -95,7 +95,8 @@
 	}
 
 	//添加消息
-	function AddMsg() {
+	function AddMsg(event) {
+		event.preventDefault();
 		if (chatmsg.value.trim() == "") {
 			ElMessage({
 				type: "error",
@@ -112,7 +113,7 @@
 			sender: localStorage.getItem("ID"),
 		});
 
-		socket.send(chatMsgList);
+		// socket.send(chatMsgList);
 		chatmsg.value = "";
 	}
 </script>
@@ -139,7 +140,7 @@
 				required=""
 				v-model="chatmsg"
 				type="text"
-				@keyup.enter="AddMsg()" />
+				@keyup.enter="AddMsg($event)" />
 
 			<button
 				class="sendBtn"

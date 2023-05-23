@@ -17,7 +17,7 @@
 	//引入相关文件
 
 	//定义相关信息
-	const socket = new WebSocket("ws://10.33.28.51/chat");
+	// const socket = new WebSocket("ws://10.33.28.51/chat");
 	const chatmsg = ref("");
 	const messagesEnd = ref(null); //首先，在模板中添加 ref 属性获取最后一条消息的 DOM 元素，是实现滚动到底部功能的前提
 	const containerRef = ref(null);
@@ -88,8 +88,8 @@
 			return;
 		}
 		let chatMsg = chatmsg.value;
-		socket.send(chatMsg);
-		chatmsg.value = "";
+		// socket.send(chatMsg);
+		store.addMessage(chatMsg);
 	}
 	//传给后端的消息:
 	// let chatMsgList = JSON.stringify({
@@ -107,8 +107,7 @@
 			<chatMessage
 				v-for="(item, index) in store.messages"
 				:key="index"
-				@messageHeight="getMessageHeight"
-				>
+				@messageHeight="getMessageHeight">
 				<template #msg>{{ item }}</template>
 				<template #username>{{ store.username }}</template>
 			</chatMessage>
@@ -143,8 +142,6 @@
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
-
-		
 	}
 
 	.msg-stage {
@@ -174,7 +171,7 @@
 		height: 4rem;
 		display: block;
 		margin-left: 0.6rem;
-    	line-height: 4rem;
+		line-height: 4rem;
 		border-radius: 4rem;
 		background-color: #212121;
 		font-size: 3rem;

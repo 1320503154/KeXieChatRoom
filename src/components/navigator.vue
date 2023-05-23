@@ -14,13 +14,30 @@
 <script setup>
 	import { ref } from "vue";
 	import { useRouter } from "vue-router";
+	import axios from "axios";
 	const count = ref(0);
 	const router = useRouter();
+	const SignOut = axios.create({
+		baseURL: "/api",
+		timeout: 3000,
+		withCredentials: true,
+	});
 	function handleClickOut() {
-		localStorage.removeItem("username");
-		localStorage.removeItem("avatarSelected");
-		localStorage.removeItem("ID");
-		router.push("/login");
+		let request = {
+			type: "SignOut",
+			sender: localStorage.getItem("ID"),
+		};
+		SignOut.post("/login", request)
+			.then((res) => {
+				console.log(res);
+				localStorage.removeItem("username");
+				localStorage.removeItem("avatarSelected");
+				localStorage.removeItem("ID");
+				router.push("/login");
+			})
+			.catch((err) => {
+				console.log(err);
+			});
 	}
 </script>
 

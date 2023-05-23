@@ -38,7 +38,7 @@ export const useChatStore = defineStore(
 				}
 			},
 			addMessage(message) {
-				this.messages.push(message);
+				this.messageList.push(message);
 			},
 		},
 	},

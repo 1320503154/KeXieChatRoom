@@ -8,6 +8,10 @@
 		computed,
 	} from "vue";
 	import { useChatStore } from "../stores/Chat";
+	const props = defineProps({
+		avatarSelected: Number,
+	});
+	//由此props是得到由父组件传递过来的avatarSelected的值的对象
 	const store = useChatStore();
 	const date = ref(new Date());
 	const NowTime = computed(() => {
@@ -24,7 +28,7 @@
 		//float: "left",
 		width: "50px",
 		height: "50px",
-		background: `url(/头像${store.messageList.avatarSelected}.jpg) no-repeat center center`,
+		background: `url(/头像${props.avatarSelected}.jpg) no-repeat center center`,
 		backgroundSize: "cover",
 		borderRadius: "50%",
 	}));

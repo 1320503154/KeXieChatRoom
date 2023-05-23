@@ -24,7 +24,7 @@
 		//float: "left",
 		width: "50px",
 		height: "50px",
-		background: `url(/头像${store.avatarSelected}.jpg) no-repeat center center`,
+		background: `url(/头像${store.messageList.avatarSelected}.jpg) no-repeat center center`,
 		backgroundSize: "cover",
 		borderRadius: "50%",
 	}));

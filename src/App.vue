@@ -13,7 +13,8 @@
 	<button @click="signIn()">1</button>
 </template>
 
-<style scoped>
+<style>
+	/* 一般在App.vue这个文件内部是不用scoped的,全局生效 */
 	.Main-container {
 		display: flex;
 		justify-content: center;

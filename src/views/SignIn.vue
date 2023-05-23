@@ -144,14 +144,6 @@
 		avatar.value = data[index].avatar;
 		return index;
 	};
-	// const join = new WebSocket("ws://keixe.space/chat/");
-	// console.log('ws连接状态：' + join.readyState);
-	// const request = {
-	// 	name: username,
-	// 	avatarSelected: avatarSelected,
-	// };
-	//后端写好之后可以打开这两个注释，一个是用于测试连接状态，一个是发送信息。
-	// join.send(request)
 </script>
 
 <template>

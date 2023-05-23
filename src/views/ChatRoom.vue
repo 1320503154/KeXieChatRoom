@@ -58,7 +58,8 @@
 	});
 
 	//新建WebSocket链接
-	const socket = new WebSocket("ws://10.33.28.51/chat");
+	let ID = localStorage.getItem("ID");
+	const socket = new WebSocket(`ws://10.33.28.51/chat?ID=${ID}`);
 	// 监听 WebSocket 的打开事件
 	socket.addEventListener("open", (event) => {
 		console.log("WebSocket链接建立成功!");
@@ -121,11 +122,11 @@
 			class="msg-stage"
 			ref="containerRef">
 			<chatMessage
-				v-for="(item, index) in store.messages"
+				v-for="(item, index) in store.messageList"
 				:key="index"
 				@messageHeight="getMessageHeight">
-				<template #msg>{{ item }}</template>
-				<template #username>{{ store.username }}</template>
+				<template #msg>{{ item.message }}</template>
+				<template #username>{{ item.username }}</template>
 			</chatMessage>
 			<div ref="messagesEnd"></div>
 			<!-- 当到达消息的底部时 -->

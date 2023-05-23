@@ -1,19 +1,16 @@
 <script setup>
-	import {
-		ref,
-		reactive,
-		onBeforeMount,
-		onMounted,
-		watch,
-		computed,
-	} from "vue";
+	import { ref, reactive, onMounted, computed } from "vue";
 	import { useChatStore } from "../stores/Chat";
+
 	const props = defineProps({
 		avatarSelected: Number,
 	});
 	//由此props是得到由父组件传递过来的avatarSelected的值的对象
+
 	const store = useChatStore();
+
 	const date = ref(new Date());
+
 	const NowTime = computed(() => {
 		const hours = date.value.getHours();
 		const minutes = date.value.getMinutes();
@@ -24,6 +21,7 @@
 		//三目运算符判断,保证分钟和秒钟的格式是"xx:xx:xx"
 		return timeStr;
 	});
+
 	const TouXiangStyles = computed(() => ({
 		//float: "left",
 		width: "50px",
@@ -44,6 +42,7 @@
 	const emitMessageHeight = (height) => {
 		emit("messageHeight", height);
 	};
+
 	onMounted(() => {
 		// 计算一条消息的总高度
 		if (chatMessage.value) {
@@ -56,6 +55,7 @@
 			emitMessageHeight(totalHeight());
 		}
 	});
+
 	const totalHeight = () => {
 		return height + marginTop + marginBottom + paddingTop + paddingBottom;
 	};

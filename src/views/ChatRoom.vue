@@ -1,33 +1,20 @@
 <script setup>
-	import {
-		ref,
-		reactive,
-		toRefs,
-		onBeforeMount,
-		onMounted,
-		watch,
-		computed,
-		onUpdated,
-	} from "vue";
+	import { ref, reactive, onMounted, watch, computed, onUpdated } from "vue";
 	import chatMessage from "../components/chatMessage.vue";
 
 	import { useRoute, useRouter } from "vue-router";
 	import { ElMessage } from "element-plus";
 	import { useChatStore } from "../stores/Chat";
-	//引入相关文件
 
-	//引入pinia仓库
 	const store = useChatStore();
 	const router = useRouter();
 
-	//当组件挂载时
 	onMounted(() => {
 		isLogin();
 		Welcome();
 		containerRef.value.scrollTop = containerRef.value.scrollHeight;
 	});
 
-	//欢迎成员进入
 	const Welcome = () => {
 		ElMessage({
 			message: store.WelcomeUser,
@@ -35,8 +22,6 @@
 			duration: 1500,
 		});
 	};
-
-	//判断是否登录
 	function isLogin() {
 		let NowUserName = localStorage.getItem("username");
 		if (NowUserName) {
@@ -46,31 +31,28 @@
 			router.push("/Login");
 		}
 	}
-	//监听消息更新
+
 	onUpdated(() => {
-		//使用 onUpdated 钩子函数，监听 store 中的 messages 数组是否更新。
-		//每当 messages 更新时，onUpdated 钩子函数会执行，messagesEnd 变量的值会更新，指向最新的最后一条消息的 DOM 元素。
 		if (isScrolledToBottom() || isFirstScrollMessage()) {
 			containerRef.value.scrollTop = containerRef.value.scrollHeight;
 		}
 	});
 
-	//新建WebSocket链接
 	let username = localStorage.getItem("username");
 
 	const socket = new WebSocket(`ws://10.33.28.51/chat/name=${username}`);
-	// 监听 WebSocket 的打开事件
+
 	socket.addEventListener("open", (event) => {
 		console.log("WebSocket链接建立成功!");
 	});
-	//监听后端发送的消息事件
+
 	socket.addEventListener("message", (event) => {
 		console.log("event::: ", event);
 	});
-	const chatmsg = ref(""); //输入框双向绑定的消息~
-	const messagesEnd = ref(null); //首先，在模板中添加 ref 属性获取最后一条消息的 DOM 元素，是实现滚动到底部功能的前提
+	const chatmsg = ref("");
+	const messagesEnd = ref(null);
 
-	const containerRef = ref(null); //判断是否在底部的dom
+	const containerRef = ref(null);
 
 	const messageHeight = ref(0);
 	// 得到子组件的消息高度
@@ -93,7 +75,6 @@
 			return true;
 	}
 
-	//添加消息
 	function AddMsg(event) {
 		event.preventDefault();
 		if (chatmsg.value.trim() == "") {

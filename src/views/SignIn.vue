@@ -32,6 +32,8 @@
 	const Err = ref("");
 	const router = useRouter();
 	const regex = /^[\u4e00-\u9fa5a-zA-Z0-9]{2,8}$/; //正则表达式,检测是否是合法的用户名
+
+	//以下是读取Blob类型数据为字符串,暂时废弃
 	function readBlobAsString(blob) {
 		return new Promise((resolve, reject) => {
 			const reader = new FileReader(); // 创建 FileReader 对象
@@ -46,6 +48,7 @@
 			reader.readAsText(blob);
 		});
 	}
+
 	function matchReg(regex, str) {
 		return regex.test(str);
 	}

@@ -76,8 +76,7 @@
 			return true;
 	}
 
-	function AddMsg(event) {
-		event.preventDefault();
+	function AddMsg() {
 		if (chatmsg.value.trim() == "") {
 			ElMessage({
 				type: "error",
@@ -88,22 +87,23 @@
 		}
 
 		let chatMsg = chatmsg.value;
-		console.log("发送的消息是" + chatMsg + "以下是后端的消息");
+		console.log("发送的消息是::" + chatMsg + "::以下是后端的消息");
 		let chatMsgList = JSON.stringify({
 			type: "msg",
 			msg: chatMsg,
 			sender: localStorage.getItem("ID"),
 			avatarSelected: localStorage.getItem("avatarSelected"),
 		});
-		// let messageObject = {
-		// 	username: username,
-		// 	message: chatMsg,
-		// 	avatarSelected: 3,
-		// };
-		// store.addMessage(messageObject);
 		socket.send(chatMsgList);
 		chatmsg.value = "";
 	}
+	//以下是本地测试的代码
+	// let messageObject = {
+	// 	username: username,
+	// 	message: chatMsg,
+	// 	avatarSelected: 3,
+	// };
+	// store.addMessage(messageObject);
 </script>
 <template>
 	<div class="room">
@@ -129,7 +129,7 @@
 				required=""
 				v-model="chatmsg"
 				type="text"
-				@keyup.enter="AddMsg($event)" />
+				@keyup.enter="AddMsg()" />
 
 			<button
 				class="sendBtn"

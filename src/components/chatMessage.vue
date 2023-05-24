@@ -6,7 +6,7 @@
 		avatarSelected: Number,
 	});
 	//由此props是得到由父组件传递过来的avatarSelected的值的对象
-
+	//props的值可以直接在模板中使用
 	const store = useChatStore();
 
 	const date = ref(new Date());

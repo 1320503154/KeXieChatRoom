@@ -82,7 +82,6 @@
 	<div class="Main-container">
 		<RouterView />
 	</div>
-	<button @click="signIn()">1</button>
 </template>
 
 <style scoped>

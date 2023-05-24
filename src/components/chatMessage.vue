@@ -22,8 +22,8 @@
 	});
 	const TouXiangStyles = computed(() => ({
 		//float: "left",
-		width: "50px",
-		height: "50px",
+		width: "3rem",
+		height: "3rem",
 		background: `url(/头像${store.avatarSelected}.jpg) no-repeat center center`,
 		backgroundSize: "cover",
 		borderRadius: "50%",
@@ -126,6 +126,7 @@
 	}
 
 	.time-stamp {
+		margin-top: 0.2rem;
 		opacity: 0.7;
 		text-shadow: 5px 5px 0px 5px rgba(0, 0, 0, 0.356);
 	}

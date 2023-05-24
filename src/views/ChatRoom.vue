@@ -17,8 +17,8 @@
 
 	const Welcome = () => {
 		ElMessage({
-			type: "error",
-			message: "请不要输入空消息!!!",
+			type: "success",
+			message: store.WelcomeUser,
 			duration: 1500,
 		});
 	};

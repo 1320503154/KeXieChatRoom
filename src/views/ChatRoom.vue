@@ -17,8 +17,8 @@
 
 	const Welcome = () => {
 		ElMessage({
-			message: store.WelcomeUser,
-			type: "success",
+			type: "error",
+			message: "请不要输入空消息!!!",
 			duration: 1500,
 		});
 	};
@@ -137,9 +137,9 @@
 				@keyup.enter="AddMsg()" />
 
 			<button
-				class="sendBtn"
+				class="send-btn"
 				@click="AddMsg()">
-				➠
+				<div>➠</div>
 			</button>
 		</div>
 	</div>
@@ -178,11 +178,15 @@
 		align-self: center;
 	}
 
-	.sendBtn {
-		width: 4rem;
+	.send-btn {
+		width: 4rem !important;
 		height: 4rem;
-		display: block;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
 		margin-left: 0.6rem;
+		padding: 0.4rem 0.4rem;
 		line-height: 4rem;
 		border-radius: 4rem;
 		background-color: #212121;
@@ -190,9 +194,10 @@
 		color: #d8f4f8;
 		cursor: pointer;
 		scale: 1;
+		text-align: center;
 	}
 
-	.sendBtn:hover {
+	.send-btn:hover {
 		transition: all 0.25s ease-in-out;
 		transform: scale(1.05);
 	}

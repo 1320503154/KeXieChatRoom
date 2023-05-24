@@ -1,114 +1,114 @@
 <script setup>
-		import { ref, reactive, onMounted, watch, computed, onUpdated } from "vue";
-		import chatMessage from "../components/chatMessage.vue";
+	import { ref, reactive, onMounted, watch, computed, onUpdated } from "vue";
+	import chatMessage from "../components/chatMessage.vue";
 
-		import { useRoute, useRouter } from "vue-router";
-		import { ElMessage } from "element-plus";
-		import { useChatStore } from "../stores/Chat";
+	import { useRoute, useRouter } from "vue-router";
+	import { ElMessage } from "element-plus";
+	import { useChatStore } from "../stores/Chat";
 
-		const store = useChatStore();
-		const router = useRouter();
+	const store = useChatStore();
+	const router = useRouter();
 
-		onMounted(() => {
-			isLogin();
-			Welcome();
-			containerRef.value.scrollTop = containerRef.value.scrollHeight;
+	onMounted(() => {
+		isLogin();
+		Welcome();
+		containerRef.value.scrollTop = containerRef.value.scrollHeight;
+	});
+
+	const Welcome = () => {
+		ElMessage({
+			message: store.WelcomeUser,
+			type: "success",
+			duration: 1500,
 		});
+	};
+	function isLogin() {
+		let NowUserName = localStorage.getItem("username");
+		if (NowUserName) {
+			store.username = NowUserName;
+			router.push("/chatRoom");
+		} else {
+			router.push("/Login");
+		}
+	}
 
-		const Welcome = () => {
+	onUpdated(() => {
+		if (isScrolledToBottom() || isFirstScrollMessage()) {
+			containerRef.value.scrollTop = containerRef.value.scrollHeight;
+		}
+	});
+
+	let username = localStorage.getItem("username");
+
+	// const socket = new WebSocket(`ws://10.33.28.51/chat/name=${username}`);
+
+	// socket.addEventListener("open", (event) => {
+	// 	console.log("WebSocket链接建立成功!");
+	// });
+
+	// socket.addEventListener("message", (event) => {
+	// 	let data = JSON.parse(event.data);
+	//        if(data.type == "incomingMsg"){
+	// 		let msgList={
+	// 			message:data.content,
+	// 			avatarSelected:data.senderAvatarId,
+	// 			username:data.sender,
+	// 		};
+	//         store.addMessage(msgList);
+	// }
+	const chatmsg = ref("");
+	const messagesEnd = ref(null);
+
+	const containerRef = ref(null);
+
+	const messageHeight = ref(0);
+	// 得到子组件的消息高度
+	const getMessageHeight = (height) => {
+		messageHeight.value = height;
+	};
+
+	// 判断是否滑倒底部
+	function isScrolledToBottom() {
+		const container = containerRef.value;
+		return (
+			parseInt(container.scrollTop) ==
+			container.scrollHeight - container.clientHeight - messageHeight.value
+		);
+	}
+
+	function isFirstScrollMessage() {
+		const container = containerRef.value;
+		if (container.scrollHeight <= container.clientHeight + messageHeight.value)
+			return true;
+	}
+	//以下是本地测试的代码
+	// let messageObject = {
+	// 	username: username,
+	// 	message: chatMsg,
+	// 	avatarSelected: 3,
+	// };
+	// store.addMessage(messageObject);
+	function AddMsg() {
+		if (chatmsg.value.trim() == "") {
 			ElMessage({
-				message: store.WelcomeUser,
-				type: "success",
+				type: "error",
+				message: "请不要输入空消息!!!",
 				duration: 1500,
 			});
-		};
-		function isLogin() {
-			let NowUserName = localStorage.getItem("username");
-			if (NowUserName) {
-				store.username = NowUserName;
-				router.push("/chatRoom");
-			} else {
-				router.push("/Login");
-			}
+			return;
 		}
 
-		onUpdated(() => {
-			if (isScrolledToBottom() || isFirstScrollMessage()) {
-				containerRef.value.scrollTop = containerRef.value.scrollHeight;
-			}
+		let chatMsg = chatmsg.value.trim();
+		console.log("发送的消息是::" + chatMsg + "::以下是后端的消息");
+		let chatMsgList = JSON.stringify({
+			type: "msg",
+			msg: chatMsg,
+			sender: localStorage.getItem("ID"),
+			avatarSelected: localStorage.getItem("avatarSelected"),
 		});
-
-		let username = localStorage.getItem("username");
-
-		const socket = new WebSocket(`ws://10.33.28.51/chat/name=${username}`);
-
-		socket.addEventListener("open", (event) => {
-			console.log("WebSocket链接建立成功!");
-		});
-
-		socket.addEventListener("message", (event) => {
-			let data = JSON.parse(event.data);
-		       if(data.type == "incomingMsg"){
-				let msgList={
-					message:data.content,
-					avatarSelected:data.senderAvatarId,
-					username:data.sender,
-				};
-	            store.addMessage(msgList);
-		}
-		const chatmsg = ref("");
-		const messagesEnd = ref(null);
-
-		const containerRef = ref(null);
-
-		const messageHeight = ref(0);
-		// 得到子组件的消息高度
-		const getMessageHeight = (height) => {
-			messageHeight.value = height;
-		};
-
-		// 判断是否滑倒底部
-		function isScrolledToBottom() {
-			const container = containerRef.value;
-			return (
-				parseInt(container.scrollTop) ==
-				container.scrollHeight - container.clientHeight - messageHeight.value
-			);
-		}
-
-		function isFirstScrollMessage() {
-			const container = containerRef.value;
-			if (container.scrollHeight <= container.clientHeight + messageHeight.value)
-				return true;
-		}
-	//以下是本地测试的代码
-		// let messageObject = {
-		// 	username: username,
-		// 	message: chatMsg,
-		// 	avatarSelected: 3,
-		// };
-		// store.addMessage(messageObject);
-		function AddMsg() {
-			if (chatmsg.value.trim() == "") {
-				ElMessage({
-					type: "error",
-					message: "请不要输入空消息!!!",
-					duration: 1500,
-				});
-				return;
-			}
-
-			let chatMsg = chatmsg.value.trim();
-			console.log("发送的消息是::" + chatMsg + "::以下是后端的消息");
-			let chatMsgList = JSON.stringify({
-				type: "msg",
-				msg: chatMsg,
-				sender: localStorage.getItem("ID"),
-				avatarSelected: localStorage.getItem("avatarSelected"),
-			});
-			socket.send(chatMsgList);
-			chatmsg.value = "";
-		}
+		// socket.send(chatMsgList);
+		chatmsg.value = "";
+	}
 </script>
 <template>
 	<div class="room">

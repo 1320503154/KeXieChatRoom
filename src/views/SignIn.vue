@@ -69,9 +69,19 @@
 			});
 			return;
 		}
+
+		localStorage.setItem("username", _username);
+		localStorage.setItem("avatarSelected", _index);
+
+		store.avatarSelected = _index;
+		avatarSelected.value = "";
+
+		store.username = _username;
+		username.value = "";
+
 		let request = {
-			name: _username,
-			avatarSelected: _index,
+			name: localStorage.getItem("username"),
+			avatarSelected: localStorage.getItem("avatarSelected"),
 		};
 		Join.post("/login", request)
 			.then((res) => {
@@ -142,18 +152,34 @@
 	const randomint = (max) => {
 		return Math.floor(Math.random() * max);
 	};
-	let index = randomint(9);
+	let index = randomint(10);
 	const avatar = ref(data[index].avatar);
 	const change = () => {
-		index = randomint(9);
+		index = randomint(10);
 		avatar.value = data[index].avatar;
-		return index;
 	};
-</script>
 
+	function Mobile(number) {
+		let flag =
+			/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+				navigator.userAgent
+			);
+		if (flag && number == 1) {
+			return {
+				height: "80vh",
+			};
+		} else if (flag && number == 2) {
+			return {
+				"margin-bottom": "150px",
+			};
+		}
+	}
+</script>
 <template>
-	<div class="allin">
-		<form>
+	<div
+		class="allin"
+		:style="Mobile(1)">
+		<form :style="Mobile(2)">
 			<div style="position: relative">
 				<div class="view">
 					<img
@@ -187,23 +213,26 @@
 		justify-content: center;
 		align-items: center;
 		width: 99vw;
-		height: 90vh;
+		height: 93vh;
 		border-radius: 1rem;
 		background: url("/聊天网页背景.png") no-repeat center center;
 		background-size: cover;
 		backdrop-filter: blur(5px);
 		background-color: rgba(255, 255, 255, 0.8);
 		box-shadow: 0px 2px 10px 5px rgba(0, 0, 0, 0.25);
+		margin-top: 0.3rem;
+		margin-left: 0.3rem;
+		overflow: hidden;
 	}
 
 	form {
 		/* test props */
-		width: 400px;
+		width: 25vw;
 		height: 400px;
+		min-width: 300px;
 		background-color: rgb(243, 243, 243);
 		border: 1px solid #dddddd;
 		/* real props */
-		margin: 12%;
 		border-radius: 40px;
 		display: flex;
 		flex-direction: column;
@@ -214,6 +243,8 @@
 		-webkit-backdrop-filter: blur(8px);
 		backdrop-filter: blur(8px);
 		box-shadow: inset 0 0 6px rgba(255, 255, 255, 0.2);
+		-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+		-webkit-tap-highlight-color: transparent;
 	}
 
 	.view {
@@ -236,8 +267,8 @@
 
 	p {
 		position: absolute;
-		top: -70px;
-		right: -11px;
+		top: -7vh;
+		right: -3vw;
 		transform: rotate(340deg);
 		font-size: 22px;
 		white-space: nowrap;
@@ -278,6 +309,7 @@
 		);
 		background-size: 400% 400%;
 		animation: ani 6s linear infinite;
+		overflow: hidden;
 	}
 
 	@keyframes ani {
@@ -318,18 +350,19 @@
 		border-radius: 10px;
 		box-shadow: 1px 1px 15px rgba(0, 0, 0, 0.2);
 		transition: border 0.2s linear;
-		font-size: 16px;
+		font-size: 80%;
 	}
 
 	.name:focus {
-		outline: 2px solid #6bf789;
+		outline: 2px solid #51a1b6;
 	}
 
 	.btn {
 		background-color: #fff;
 		border: 1px solid #dddddd;
-		width: 250px;
-		height: 40px;
+		width: 60%;
+		height: 10%;
+		font-size: 80%;
 		cursor: pointer;
 		border-radius: 10px;
 		background: rgba(255, 255, 255, 0.3);

@@ -81,13 +81,8 @@
 		if (container.scrollHeight <= container.clientHeight + messageHeight.value)
 			return true;
 	}
-	//以下是本地测试的代码
-	// let messageObject = {
-	// 	username: username,
-	// 	message: chatMsg,
-	// 	avatarSelected: 3,
-	// };
-	// store.addMessage(messageObject);
+	// 以下是本地测试的代码
+
 	function AddMsg() {
 		if (chatmsg.value.trim() == "") {
 			ElMessage({
@@ -107,6 +102,12 @@
 			avatarSelected: localStorage.getItem("avatarSelected"),
 		});
 		// socket.send(chatMsgList);
+		let messageObject = {
+			username: username,
+			message: chatMsg,
+			avatarSelected: Math.floor(Math.random() * 10) + 1,
+		};
+		store.addMessage(messageObject);
 		chatmsg.value = "";
 	}
 </script>

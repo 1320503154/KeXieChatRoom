@@ -26,9 +26,11 @@
 		timeout: 3000,
 		withCredentials: true,
 	});
+
 	const store = useChatStore();
-	const username = ref("");
 	const avatarSelected = ref("");
+
+	const username = ref("");
 	const Err = ref("");
 	const router = useRouter();
 	const regex = /^[\u4e00-\u9fa5a-zA-Z0-9]{2,8}$/; //正则表达式,检测是否是合法的用户名

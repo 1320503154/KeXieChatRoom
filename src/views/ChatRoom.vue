@@ -47,9 +47,10 @@
 	});
 
 	socket.addEventListener("message", (event) => {
-		let MsgData = event;
-		console.log(MsgData);
-	});
+		let data = JSON.parse(event.data);
+	       if(data.type == "incomingMsg"){
+
+	};
 	const chatmsg = ref("");
 	const messagesEnd = ref(null);
 
@@ -86,7 +87,7 @@
 			return;
 		}
 
-		let chatMsg = chatmsg.value;
+		let chatMsg = chatmsg.value.trim();
 		console.log("发送的消息是::" + chatMsg + "::以下是后端的消息");
 		let chatMsgList = JSON.stringify({
 			type: "msg",

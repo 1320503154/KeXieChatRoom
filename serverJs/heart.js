@@ -1,8 +1,8 @@
 function createWebSocket(url, options = {}) {
 	const {
 		heartbeatMsg = "ping",
-		heartbeatInterval = 30000,
-		reconnectInterval = 1000,
+		heartbeatInterval = 30000, //30秒发送一次心跳消息
+		reconnectInterval = 1000, //1秒
 		maxReconnectAttempts = Infinity,
 	} = options;
 

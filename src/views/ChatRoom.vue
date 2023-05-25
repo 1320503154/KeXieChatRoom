@@ -18,7 +18,10 @@
 	const scrollToBottom = () => {
 		const container = containerRef.value;
 		if (container) {
-			container.scrollTop = container.scrollHeight;
+			container.scrollTo({
+				top: container.scrollHeight,
+				behavior: "smooth",
+			});
 		}
 	};
 	// 判断是否滑倒底部
@@ -163,7 +166,7 @@
 		</div>
 		<div class="intent-area">
 			<input
-				autofocus
+				inputmode="text"
 				class="input input-alt"
 				placeholder="请发送你的消息!"
 				required=""
@@ -173,7 +176,7 @@
 
 			<button
 				class="send-btn"
-				@click="AddMsg()">
+				@click.prevent="AddMsg()">
 				<div>➠</div>
 			</button>
 		</div>
@@ -319,16 +322,44 @@
 		width: 90%;
 	}
 	.scroll-to-bottom {
+		color: black;
+		font-size: 1.3rem;
+		cursor: pointer;
 		position: fixed;
-		bottom: 5rem;
-		right: 5rem;
+		top: 10px;
 		z-index: 10;
-		width: 2rem;
-		height: 2rem;
+		width: 32px;
+		height: 32px;
+		border: none;
 		border-radius: 50%;
-		background: #ffcb21;
-		display: flex;
-		justify-content: center;
-		align-items: center;
+		background: transparent;
+		box-shadow: 3px 3px 4px 2px rgba(0, 0, 0, 0.3);
+	}
+	.scroll-to-bottom:active {
+		box-shadow: 2px 2px 4px 2px rgba(0, 0, 0, 0.3) inset;
+	}
+	/* .scroll-to-bottom::after {
+		content: "点我到底部";
+		display: none;
+		position: absolute;
+		top: 48px;
+		left: -20px;
+		width: 80px;
+		height: 16px;
+		background: transparent;
+		text-align: center;
+		border-radius: 2rem;
+		font-size: 0.8rem;
+		color: rgb(0, 183, 255);
+		padding-bottom: 1rem;
+	}
+	.scroll-to-bottom:hover::after {
+		display: block;
+	} */
+	@media screen and (max-width: 512px) {
+		.scroll-to-bottom {
+			height: 32px;
+			top: 0.5vh;
+		}
 	}
 </style>

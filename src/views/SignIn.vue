@@ -103,7 +103,7 @@
 			});
 		setTimeout(() => {
 			router.push("/chatRoom");
-		}, 1000);
+		}, 500);
 	}
 
 	const data = [

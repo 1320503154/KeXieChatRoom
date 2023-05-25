@@ -47,7 +47,10 @@
 </script>
 
 <style scoped>
-	@media (max-width: 300px) {
+	@media screen and (max-width: 300px) {
+		.out-btn {
+			height: 30px;
+		}
 	}
 
 	.container {

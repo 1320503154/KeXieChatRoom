@@ -85,32 +85,32 @@
 
 	let username = localStorage.getItem("username");
 
-	// const socket = new WebSocket(`ws://10.33.28.51/chat/name=${username}`);
+	const socket = new WebSocket(`ws://10.33.28.51/chat/name=${username}`);
 
-	// socket.addEventListener("open", (event) => {
-	// 	console.log("监听到打开事件---WebSocket链接建立成功!");
-	// });
+	socket.addEventListener("open", (event) => {
+		console.log("监听到打开事件---WebSocket链接建立成功!");
+	});
 
-	// socket.addEventListener("message", handleMsgEvent, false);
+	socket.addEventListener("message", handleMsgEvent, false);
 
-	// function handleMsgEvent(event) {
-	// 	console.log("监听到消息事件---WebSocket消息接收成功!");
-	// 	let data = JSON.parse(event.data);
-	// 	if (data.type == "incomingMsg") {
-	// 		let msgList = {
-	// 			message: data.content,
-	// 			avatarSelected: data.senderAvatarId,
-	// 			username: data.sender,
-	// 		};
-	// 		store.addMessage(msgList);
-	// 	}
-	// }
+	function handleMsgEvent(event) {
+		console.log("监听到消息事件---WebSocket消息接收成功!");
+		let data = JSON.parse(event.data);
+		if (data.type == "incomingMsg") {
+			let msgList = {
+				message: data.content,
+				avatarSelected: data.senderAvatarId,
+				username: data.sender,
+			};
+			store.addMessage(msgList);
+		}
+	}
 
-	// socket.addEventListener("close", handleCloseEvent, false);
+	socket.addEventListener("close", handleCloseEvent, false);
 
-	// function handleCloseEvent() {
-	// 	console.log("监听到关闭事件---WebSocket链接关闭!");
-	// }
+	function handleCloseEvent() {
+		console.log("监听到关闭事件---WebSocket链接关闭!");
+	}
 
 	const messageHeight = ref(0);
 	// 得到子组件的消息高度
@@ -138,13 +138,13 @@
 			sender: localStorage.getItem("ID"),
 			avatarSelected: localStorage.getItem("avatarSelected"),
 		});
-		// socket.send(chatMsgList);
-		let messageObject = {
-			username: username,
-			message: chatMsg,
-			avatarSelected: Math.floor(Math.random() * 10) + 1,
-		};
-		store.addMessage(messageObject);
+		socket.send(chatMsgList);
+		// let messageObject = {
+		// 	username: username,
+		// 	message: chatMsg,
+		// 	avatarSelected: Math.floor(Math.random() * 10) + 1,
+		// };
+		// store.addMessage(messageObject);
 		chatmsg.value = "";
 	}
 </script>

@@ -6,8 +6,50 @@
 	import { ElMessage } from "element-plus";
 	import { useChatStore } from "../stores/Chat";
 
-	const store = useChatStore();
+	//定义相关信息
+	// const socket = new WebSocket("ws://10.33.28.51/chat");
+
 	const router = useRouter();
+
+	const chatmsg = ref("");
+	const messagesEnd = ref(null);
+
+	const containerRef = ref(null);
+	const scrollToBottom = () => {
+		const container = containerRef.value;
+		if (container) {
+			container.scrollTop = container.scrollHeight;
+		}
+	};
+	// 判断是否滑倒底部
+	function isScrolledToBottom() {
+		const container = containerRef.value;
+		console.log(
+			parseInt(container.scrollTop),
+			container.scrollHeight - container.clientHeight - messageHeight.value
+		);
+		if (
+			parseInt(container.scrollTop) ==
+				container.scrollHeight - container.clientHeight - messageHeight.value ||
+			parseInt(container.scrollTop) - 1 ==
+				container.scrollHeight - container.clientHeight - messageHeight.value ||
+			parseInt(container.scrollTop) + 1 ==
+				container.scrollHeight - container.clientHeight - messageHeight.value
+		)
+			return true;
+		else return false;
+		// return (
+		// 	parseInt(container.scrollTop) ==
+		// 	container.scrollHeight - container.clientHeight - messageHeight.value
+		// );
+	}
+	function isFirstScrollMessage() {
+		const container = containerRef.value;
+		if (container.scrollHeight <= container.clientHeight + messageHeight.value)
+			return true;
+	}
+	//引入pinia仓库
+	const store = useChatStore();
 
 	onMounted(() => {
 		isLogin();
@@ -66,10 +108,6 @@
 	// function handleCloseEvent() {
 	// 	console.log("监听到关闭事件---WebSocket链接关闭!");
 	// }
-	const chatmsg = ref("");
-	const messagesEnd = ref(null);
-
-	const containerRef = ref(null);
 
 	const messageHeight = ref(0);
 	// 得到子组件的消息高度
@@ -77,20 +115,6 @@
 		messageHeight.value = height;
 	};
 
-	// 判断是否滑倒底部
-	function isScrolledToBottom() {
-		const container = containerRef.value;
-		return (
-			parseInt(container.scrollTop) ==
-			container.scrollHeight - container.clientHeight - messageHeight.value
-		);
-	}
-
-	function isFirstScrollMessage() {
-		const container = containerRef.value;
-		if (container.scrollHeight <= container.clientHeight + messageHeight.value)
-			return true;
-	}
 	// 以下是本地测试的代码
 
 	function AddMsg() {
@@ -153,6 +177,13 @@
 				<div>➠</div>
 			</button>
 		</div>
+		<div>
+			<button
+				class="scroll-to-bottom"
+				@click="scrollToBottom">
+				&#8595;
+			</button>
+		</div>
 	</div>
 </template>
 
@@ -180,16 +211,6 @@
 		margin-left: 0.3rem;
 	}
 
-	.intent-area {
-		position: fixed;
-		top: calc(98vh - 4rem);
-		display: flex;
-		justify-content: space-between;
-		width: 98%;
-		max-width: 1200px;
-		align-self: center;
-	}
-
 	.send-btn {
 		width: 4rem !important;
 		height: 4rem;
@@ -208,15 +229,41 @@
 		scale: 1;
 		text-align: center;
 	}
+	.intent-area {
+		position: fixed;
+		top: calc(98vh - 3rem);
+		display: flex;
+		justify-content: space-between;
+		width: 98%;
+		max-width: 1200px;
+		align-self: center;
+	}
 
+	.send-btn {
+		width: 3rem !important;
+		height: 3rem;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		margin-left: 0.6rem;
+		padding: 0.4rem 0.4rem;
+		line-height: 3rem;
+		border-radius: 4rem;
+		background-color: #212121;
+		font-size: 2rem;
+		color: #d8f4f8;
+		cursor: pointer;
+		scale: 1;
+		text-align: center;
+	}
 	.send-btn:hover {
 		transition: all 0.25s ease-in-out;
 		transform: scale(1.05);
 	}
 
 	.input {
-		margin-top: 0.8rem;
-		height: 4rem;
+		height: 3rem;
 		width: 100%;
 		font-family: "noto sans";
 		color: #000000;
@@ -232,7 +279,6 @@
 		backdrop-filter: blur(18px);
 		bottom: 0.5rem;
 	}
-
 	.input-border {
 		position: absolute;
 		background: var(--border-after-color);
@@ -258,12 +304,11 @@
 	}
 
 	.input-alt {
-		font-size: 1.2rem;
-		padding-inline: 1em;
+		font-size: 1rem;
+		padding-inline: 0.5em;
 		padding-block: 0.8em;
-		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.219);
+		/* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
 	}
-
 	.input-border-alt {
 		height: 3px;
 		background: linear-gradient(90deg, #ff6464 0%, #ffbf59 50%, #47c9ff 100%);
@@ -272,5 +317,18 @@
 
 	.input-alt:focus + .input-border-alt {
 		width: 90%;
+	}
+	.scroll-to-bottom {
+		position: fixed;
+		bottom: 5rem;
+		right: 5rem;
+		z-index: 10;
+		width: 2rem;
+		height: 2rem;
+		border-radius: 50%;
+		background: #ffcb21;
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
 </style>

@@ -324,17 +324,17 @@
 	}
 	.scroll-to-bottom {
 		color: black;
-		font-size: 1.3rem;
+		font-size: 1.2rem;
 		cursor: pointer;
 		position: fixed;
-		top: 10px;
+		top: 0.5rem;
 		z-index: 10;
-		width: 32px;
-		height: 32px;
+		width: 1.5rem;
+		height: 1.5rem;
 		border: none;
 		border-radius: 50%;
 		background: transparent;
-		box-shadow: 3px 3px 4px 2px rgba(0, 0, 0, 0.3);
+		box-shadow: 2px 2px 4px 2px rgba(0, 0, 0, 0.3);
 	}
 	.scroll-to-bottom:active {
 		box-shadow: 2px 2px 4px 2px rgba(0, 0, 0, 0.3) inset;

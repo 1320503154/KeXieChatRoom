@@ -96,6 +96,7 @@
 	function handleMsgEvent(event) {
 		console.log("监听到消息事件---WebSocket消息接收成功!");
 		let data = JSON.parse(event.data);
+		console.log(data);
 		if (data.type == "incomingMsg") {
 			let msgList = {
 				message: data.content,

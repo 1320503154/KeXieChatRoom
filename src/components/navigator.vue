@@ -70,11 +70,11 @@ function handleClickOut() {
 
 .out-btn {
   width: 100px;
-  height: 37px;
-  font-size: 20px;
+  height: 5.6vh;
+  font-size: 1.1rem;
   color: rgb(62, 65, 65);
   letter-spacing: 2px;
-  line-height: 37px;
+  line-height: 5.6vh;
   border-radius: 35px;
   border: none;
   background-image: linear-gradient(to left, #e7e4f9, #dbfbf0);

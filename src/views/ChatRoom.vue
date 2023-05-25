@@ -50,10 +50,14 @@ const getMessageHeight = (height) => {
 // 判断是否滑倒底部
 function isScrolledToBottom() {
 	const container = containerRef.value;
-	return (
-		parseInt(container.scrollTop) ==
-		container.scrollHeight - container.clientHeight - messageHeight.value
-	);
+	console.log(parseInt(container.scrollTop), container.scrollHeight - container.clientHeight - messageHeight.value);
+	if (parseInt(container.scrollTop) == container.scrollHeight - container.clientHeight - messageHeight.value || parseInt(container.scrollTop) - 1 == container.scrollHeight - container.clientHeight - messageHeight.value || parseInt(container.scrollTop) + 1 == container.scrollHeight - container.clientHeight - messageHeight.value)
+	return true;
+	else return false;
+	// return (
+	// 	parseInt(container.scrollTop) ==
+	// 	container.scrollHeight - container.clientHeight - messageHeight.value
+	// );
 }
 function isFirstScrollMessage() {
 	const container = containerRef.value;
@@ -148,7 +152,7 @@ function AddMsg() {
 
 .intent-area {
 	position: fixed;
-	top: calc(98vh - 4rem);
+	top: calc(98vh - 3rem);
 	display: flex;
 	justify-content: space-between;
 	width: 98%;
@@ -157,18 +161,18 @@ function AddMsg() {
 }
 
 .send-btn {
-	width: 4rem !important;
-	height: 4rem;
+	width: 3rem !important;
+	height: 3rem;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
 	margin-left: 0.6rem;
 	padding: 0.4rem 0.4rem;
-	line-height: 4rem;
+	line-height: 3rem;
 	border-radius: 4rem;
 	background-color: #212121;
-	font-size: 3rem;
+	font-size: 2rem;
 	color: #d8f4f8;
 	cursor: pointer;
 	scale: 1;
@@ -181,7 +185,7 @@ function AddMsg() {
 }
 
 .input {
-	height: 4rem;
+	height: 3rem;
 	width: 100%;
 	font-family: "noto sans";
 	color: #000000;
@@ -223,8 +227,8 @@ function AddMsg() {
 }
 
 .input-alt {
-	font-size: 1.2rem;
-	padding-inline: 1em;
+	font-size: 1rem;
+	padding-inline: 0.5em;
 	padding-block: 0.8em;
 	/* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
 }

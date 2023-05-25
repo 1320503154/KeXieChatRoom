@@ -22,8 +22,8 @@
 	});
 	const TouXiangStyles = computed(() => ({
 		//float: "left",
-		width: "3rem",
-		height: "3rem",
+		width: "2.3rem",
+		height: "2.3rem",
 		background: `url(/头像${store.avatarSelected}.jpg) no-repeat center center`,
 		backgroundSize: "cover",
 		borderRadius: "50%",
@@ -87,8 +87,8 @@
 	}
 
 	.msg {
-		margin-top: 1rem;
-		margin-left: 1rem;
+		margin-top: 0.8rem;
+		margin-left: 0.8rem;
 	}
 
 	.main {
@@ -97,12 +97,12 @@
 		max-width: fit-content;
 		align-items: center;
 		flex-direction: column;
-		padding: 1rem;
+		padding: 0.5rem;
 
 		/* border: 1px solid #212121; */
 		border-radius: 0.5rem;
 		box-shadow: 3px 3px 7px 0px rgba(0, 0, 0, 0.329);
-		gap: 0.5rem;
+		gap: 0.3rem;
 		backdrop-filter: blur(18px);
 	}
 
@@ -110,19 +110,19 @@
 		display: flex;
 		justify-content: start;
 		align-items: center;
-		gap: 2rem;
+		gap: 1rem;
 		align-self: flex-start;
 	}
 
 	.username {
-		font-size: 1.5rem;
+		font-size: 1rem;
 	}
 
 	.content {
 		align-self: flex-start;
 		text-align: left;
 		text-indent: 2rem;
-		font-size: 1.8rem;
+		font-size: 1rem;
 	}
 
 	.time-stamp {
@@ -132,7 +132,7 @@
 	}
 
 	.decoration {
-		width: 80%;
+		width: 89%;
 		height: 1px;
 		max-width: 400px;
 		border-radius: 2px;
@@ -141,6 +141,10 @@
 
 		align-self: flex-start;
 		animation: 0.6s ease appearance;
+	}
+
+	.TimeLine {
+		font-size: 0.7rem;
 	}
 
 	@keyframes appearance {

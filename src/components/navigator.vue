@@ -23,21 +23,17 @@
 		withCredentials: true,
 	});
 	function handleClickOut() {
-		// let request = {
-		// 	type: "SignOut",
-		// 	sender: localStorage.getItem("ID"),
-		// };
-		// SignOut.post("/login", request)
-		// 	.then((res) => {
-		// 		console.log(res);
-		// 		localStorage.removeItem("username");
-		// 		localStorage.removeItem("avatarSelected");
-		// 		localStorage.removeItem("ID");
-		// 		router.push("/login");
-		// 	})
-		// 	.catch((err) => {
-		// 		console.log(err);
-		// 	});
+		let request = {
+			type: "SignOut",
+			sender: localStorage.getItem("ID"),
+		};
+		SignOut.post("/login", request)
+			.then((res) => {
+				console.log(res.data);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
 		//以下是本地测试环境
 		localStorage.removeItem("username");
 		localStorage.removeItem("avatarSelected");

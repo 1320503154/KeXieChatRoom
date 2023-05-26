@@ -1,13 +1,18 @@
 <script setup>
-	import { ref, reactive, onMounted, watch, computed, onUpdated } from "vue";
+	import {
+		ref,
+		reactive,
+		onMounted,
+		watch,
+		computed,
+		onUpdated,
+		onUnmounted,
+	} from "vue";
 	import chatMessage from "../components/chatMessage.vue";
 
 	import { useRoute, useRouter } from "vue-router";
 	import { ElMessage } from "element-plus";
 	import { useChatStore } from "../stores/Chat";
-
-	//定义相关信息
-	// const socket = new WebSocket("ws://10.33.28.51/chat");
 
 	const router = useRouter();
 
@@ -27,10 +32,10 @@
 	// 判断是否滑倒底部
 	function isScrolledToBottom() {
 		const container = containerRef.value;
-		console.log(
-			parseInt(container.scrollTop),
-			container.scrollHeight - container.clientHeight - messageHeight.value
-		);
+		// console.log(
+		// 	parseInt(container.scrollTop),
+		// 	container.scrollHeight - container.clientHeight - messageHeight.value
+		// );
 		if (
 			parseInt(container.scrollTop) ==
 				container.scrollHeight - container.clientHeight - messageHeight.value ||
@@ -85,33 +90,38 @@
 
 	let username = localStorage.getItem("username");
 
-	const socket = new WebSocket(`ws://10.33.28.51/chat/name=${username}`);
+	const socket = new WebSocket(`ws://10.33.91.119/chat/${username}`);
 
-	socket.addEventListener("open", (event) => {
+	socket.onopen = () => {
 		console.log("监听到打开事件---WebSocket链接建立成功!");
-	});
+	};
 
-	socket.addEventListener("message", handleMsgEvent, false);
+	socket.onmessage = handleMsgEvent;
 
 	function handleMsgEvent(event) {
 		console.log("监听到消息事件---WebSocket消息接收成功!");
-		let data = JSON.parse(event.data);
-		console.log(data);
-		if (data.type == "incomingMsg") {
+
+		let EventData = JSON.parse(event.data);
+
+		if (EventData.data.type == "incomingMsg") {
 			let msgList = {
-				message: data.content,
-				avatarSelected: data.senderAvatarId,
-				username: data.sender,
+				message: EventData.data.content,
+				avatarSelected: EventData.data.senderAvatarId,
+				username: EventData.data.name,
 			};
+
 			store.addMessage(msgList);
 		}
 	}
 
-	socket.addEventListener("close", handleCloseEvent, false);
+	socket.onclose = handleCloseEvent;
 
 	function handleCloseEvent() {
 		console.log("监听到关闭事件---WebSocket链接关闭!");
 	}
+	onUnmounted(() => {
+		socket.close();
+	});
 
 	const messageHeight = ref(0);
 	// 得到子组件的消息高度
@@ -132,7 +142,7 @@
 		}
 
 		let chatMsg = chatmsg.value.trim();
-		console.log("发送的消息是::" + chatMsg + "::以下是后端的消息");
+
 		let chatMsgList = JSON.stringify({
 			type: "msg",
 			msg: chatMsg,
@@ -235,7 +245,7 @@
 	}
 	.intent-area {
 		position: fixed;
-		top: calc(98vh - 3rem);
+		bottom: 0.5rem;
 		display: flex;
 		justify-content: space-between;
 		width: 98%;
@@ -324,17 +334,17 @@
 	}
 	.scroll-to-bottom {
 		color: black;
-		font-size: 1.2rem;
+		font-size: 1.3rem;
 		cursor: pointer;
 		position: fixed;
-		top: 0.5rem;
+		top: 10px;
 		z-index: 10;
-		width: 1.5rem;
-		height: 1.5rem;
+		width: 32px;
+		height: 32px;
 		border: none;
 		border-radius: 50%;
 		background: transparent;
-		box-shadow: 2px 2px 4px 2px rgba(0, 0, 0, 0.3);
+		box-shadow: 3px 3px 4px 2px rgba(0, 0, 0, 0.3);
 	}
 	.scroll-to-bottom:active {
 		box-shadow: 2px 2px 4px 2px rgba(0, 0, 0, 0.3) inset;

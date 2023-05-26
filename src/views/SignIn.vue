@@ -90,6 +90,9 @@
 					localStorage.setItem("username", res.data.name);
 					localStorage.setItem("avatarSelected", res.data.avatarSelected);
 					localStorage.setItem("ID", res.data.id);
+					setTimeout(() => {
+			router.push("/chatRoom");
+		}, 500);
 				} else if (res.data.statuts == "failedAtDuplicationOfName") {
 					ElMessage({
 						type: "error",
@@ -101,9 +104,7 @@
 			.catch((err) => {
 				console.log(err);
 			});
-		setTimeout(() => {
-			router.push("/chatRoom");
-		}, 500);
+		
 	}
 
 	const data = [

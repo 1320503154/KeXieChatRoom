@@ -32,7 +32,7 @@ export default defineConfig({
 			// 本地开发环境通过代理实现跨域
 			// 正则表达式写法
 			"/api": {
-				target: "http://10.33.28.51", // 后端服务实际地址
+				target: "http://10.33.91.119", // 后端服务实际地址
 				changeOrigin: true, //开启代理
 				rewrite: (path) => path.replace(/^\/api/, ""),
 			},

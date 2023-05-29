@@ -7,6 +7,7 @@
 		computed,
 		onUpdated,
 		onUnmounted,
+		inject,
 	} from "vue";
 	import chatMessage from "../components/chatMessage.vue";
 
@@ -14,7 +15,12 @@
 	import { ElMessage } from "element-plus";
 	import { useChatStore } from "../stores/Chat";
 
+	let onlineCountNow = ref(0)
+	const { data: onlineCountData, setOnlineCountData } = inject("onlineCountData")
 	const router = useRouter();
+	const route = useRoute()
+	const { data: show, setShow } = inject("isShow")
+	setShow(route.meta.isShow)
 
 	const chatmsg = ref("");
 	const messagesEnd = ref(null);
@@ -102,6 +108,11 @@
 		console.log("监听到消息事件---WebSocket消息接收成功!");
 
 		let EventData = JSON.parse(event.data);
+		// 将在线人数传给App组件再传给navigator
+		if(EventData.data.type === "onlineCountChanged") {
+			onlineCountNow = EventData.data.onlineCountNow
+			setOnlineCountData(onlineCountNow)
+		} 
 
 		if (EventData.data.type == "incomingMsg") {
 			let msgList = {

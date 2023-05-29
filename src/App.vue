@@ -3,10 +3,26 @@
 	import navigator from "./components/navigator.vue";
 	import { useChatStore } from "./stores/Chat";
 	import axios from "axios";
+	import { ref, provide } from "vue"
+
+	const onlineCountData = ref({});
+	const show = ref({})
+	provide("onlineCountData", {
+		data: onlineCountData,
+		setOnlineCountData(value) {
+			onlineCountData.value = value;
+		}
+	})
+	provide("isShow", {
+		data: show,
+		setShow(value) {
+			show.value = value;
+		}
+	})
 </script>
 
 <template>
-	<navigator />
+	<navigator v-if="show"/>
 	<div class="Main-container">
 		<RouterView />
 	</div>

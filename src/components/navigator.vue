@@ -1,6 +1,6 @@
 <template>
 	<div class="container">
-		<div class="text">在线人数：{{ count }}</div>
+		<div class="text">在线人数：{{ onlineCountData }}</div>
 		<div class="bt">
 			<button
 				class="out-btn"
@@ -15,6 +15,10 @@
 	import { ref } from "vue";
 	import { useRouter } from "vue-router";
 	import axios from "axios";
+	import { inject } from "vue";
+
+	const { data: onlineCountData, setOnlineCountData } = inject("onlineCountData")
+	console.log(onlineCountData);
 	const count = ref(0);
 	const router = useRouter();
 	const SignOut = axios.create({

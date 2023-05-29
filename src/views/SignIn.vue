@@ -1,7 +1,7 @@
 <script setup>
 	import { ElMessage } from "element-plus";
-	import { ref, onMounted } from "vue";
-	import { useRouter } from "vue-router";
+	import { ref, onMounted, inject } from "vue";
+	import { useRouter, useRoute } from "vue-router";
 	import { useChatStore } from "../stores/Chat.js";
 	import axios from "axios";
 	import avatar0 from "/头像1.jpg";
@@ -14,6 +14,10 @@
 	import avatar7 from "/头像8.jpg";
 	import avatar8 from "/头像9.jpg";
 	import avatar9 from "/头像10.jpg";
+	const route = useRoute()
+	console.log(route.meta.isShow);
+	const { data: show, setShow } = inject("isShow")
+	setShow(route.meta.isShow)
 	onMounted(() => {
 		username.value = localStorage.getItem("username");
 		if (username.value) {

@@ -15,6 +15,7 @@
 	import { ElMessage } from "element-plus";
 	import { useChatStore } from "../stores/Chat";
 	import axios from "axios";
+
 	let onlineCountNow = ref(0);
 	const { data: onlineCountData, setOnlineCountData } =
 		inject("onlineCountData");
@@ -132,6 +133,10 @@
 		console.log("监听到关闭事件---WebSocket链接关闭!");
 	}
 	onUnmounted(() => {
+		let request = {
+			type: "SignOut",
+			sender: localStorage.getItem("ID"),
+		};
 		socket.close();
 		const SignOut = axios.create({
 			baseURL: "/api",

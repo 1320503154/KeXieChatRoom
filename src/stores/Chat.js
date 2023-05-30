@@ -7,13 +7,7 @@ export const useChatStore = defineStore(
 		state: () => ({
 			username: "Default",
 			avatarSelected: Math.floor(Math.random() * 10) + 1,
-			messageList: [
-				{
-					message: "默认消息,只是测试",
-					username: "default",
-					avatarSelected: 1,
-				},
-			],
+			messageList: [],
 		}),
 		getters: {
 			//computed

@@ -8,16 +8,16 @@ const router = createRouter({
 			name: "home",
 			component: () => import("../views/ChatRoom.vue"),
 			meta: {
-				isShow: true
-			}
+				isShow: true,
+			},
 		},
 		{
 			path: "/login",
 			name: "login",
 			component: () => import("../views/SignIn.vue"),
 			meta: {
-				isShow: false
-			}
+				isShow: false,
+			},
 		},
 		{
 			path: "/",

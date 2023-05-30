@@ -14,13 +14,14 @@
 	import { useRoute, useRouter } from "vue-router";
 	import { ElMessage } from "element-plus";
 	import { useChatStore } from "../stores/Chat";
-
-	let onlineCountNow = ref(0)
-	const { data: onlineCountData, setOnlineCountData } = inject("onlineCountData")
+	import axios from "axios";
+	let onlineCountNow = ref(0);
+	const { data: onlineCountData, setOnlineCountData } =
+		inject("onlineCountData");
 	const router = useRouter();
-	const route = useRoute()
-	const { data: show, setShow } = inject("isShow")
-	setShow(route.meta.isShow)
+	const route = useRoute();
+	const { data: show, setShow } = inject("isShow");
+	setShow(route.meta.isShow);
 
 	const chatmsg = ref("");
 	const messagesEnd = ref(null);
@@ -109,10 +110,10 @@
 
 		let EventData = JSON.parse(event.data);
 		// 将在线人数传给App组件再传给navigator
-		if(EventData.data.type === "onlineCountChanged") {
-			onlineCountNow = EventData.data.onlineCountNow
-			setOnlineCountData(onlineCountNow)
-		} 
+		if (EventData.data.type === "onlineCountChanged") {
+			onlineCountNow = EventData.data.onlineCountNow;
+			setOnlineCountData(onlineCountNow);
+		}
 
 		if (EventData.data.type == "incomingMsg") {
 			let msgList = {
@@ -132,6 +133,22 @@
 	}
 	onUnmounted(() => {
 		socket.close();
+		const SignOut = axios.create({
+			baseURL: "/api",
+			timeout: 3000,
+			withCredentials: true,
+		});
+		SignOut.post("/login", request)
+			.then((res) => {
+				console.log(res.data);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+		//以下是本地测试环境
+		localStorage.removeItem("username");
+		localStorage.removeItem("avatarSelected");
+		localStorage.removeItem("ID");
 	});
 
 	const messageHeight = ref(0);
@@ -193,7 +210,8 @@
 				placeholder="请发送你的消息!"
 				required=""
 				v-model="chatmsg"
-				type="text"
+				:rows="2"
+				type="textarea"
 				@keyup.enter="AddMsg()" />
 
 			<button

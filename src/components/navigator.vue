@@ -17,8 +17,9 @@
 	import axios from "axios";
 	import { inject } from "vue";
 
-	const { data: onlineCountData, setOnlineCountData } = inject("onlineCountData")
-	console.log(onlineCountData);
+	const { data: onlineCountData, setOnlineCountData } =
+		inject("onlineCountData");
+
 	const count = ref(0);
 	const router = useRouter();
 	const SignOut = axios.create({

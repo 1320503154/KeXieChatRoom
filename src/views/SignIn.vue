@@ -14,10 +14,10 @@
 	import avatar7 from "/头像8.jpg";
 	import avatar8 from "/头像9.jpg";
 	import avatar9 from "/头像10.jpg";
-	const route = useRoute()
-	console.log(route.meta.isShow);
-	const { data: show, setShow } = inject("isShow")
-	setShow(route.meta.isShow)
+	const route = useRoute();
+
+	const { data: show, setShow } = inject("isShow");
+	setShow(route.meta.isShow);
 	onMounted(() => {
 		username.value = localStorage.getItem("username");
 		if (username.value) {
@@ -69,7 +69,7 @@
 			ElMessage({
 				type: "error",
 				message: Err,
-				duration: 2000,
+				duration: 5000,
 			});
 			return;
 		}
@@ -95,8 +95,8 @@
 					localStorage.setItem("avatarSelected", res.data.avatarSelected);
 					localStorage.setItem("ID", res.data.id);
 					setTimeout(() => {
-			router.push("/chatRoom");
-		}, 500);
+						router.push("/chatRoom");
+					}, 500);
 				} else if (res.data.statuts == "failedAtDuplicationOfName") {
 					ElMessage({
 						type: "error",
@@ -107,8 +107,13 @@
 			})
 			.catch((err) => {
 				console.log(err);
+				if (err.message == "Request failed with status code 500")
+					ElMessage({
+						type: "error",
+						message: "服务器响应失败!!!",
+						duration: 2000,
+					});
 			});
-		
 	}
 
 	const data = [
@@ -218,7 +223,7 @@
 		justify-content: center;
 		align-items: center;
 		width: 99vw;
-		height: 93vh;
+		height: 100vh;
 		border-radius: 1rem;
 		background: url("/聊天网页背景.png") no-repeat center center;
 		background-size: cover;

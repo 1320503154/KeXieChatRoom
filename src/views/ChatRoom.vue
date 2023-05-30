@@ -96,7 +96,7 @@
 
 	let username = localStorage.getItem("username");
 
-	const socket = new WebSocket(`ws://10.33.91.119/chat/${username}`);
+	const socket = new WebSocket(`ws://chat.kexie.space:8080/chat/${username}`);
 
 	socket.onopen = () => {
 		console.log("监听到打开事件---WebSocket链接建立成功!");

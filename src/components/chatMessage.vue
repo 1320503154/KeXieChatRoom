@@ -25,7 +25,7 @@
 	const TouXiangStyles = computed(() => ({
 		width: "3rem",
 		height: "3rem",
-		background: `url(/头像${props.avatarSelected}.jpg) no-repeat center center`,
+		background: `url(/头像${props.avatarSelected + 1}.jpg) no-repeat center center`,
 		backgroundSize: "cover",
 		borderRadius: "50%",
 	}));

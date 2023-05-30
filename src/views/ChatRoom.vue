@@ -6,6 +6,7 @@
 		watch,
 		computed,
 		onUpdated,
+		onBeforeUnmount,
 		onUnmounted,
 		inject,
 	} from "vue";
@@ -16,18 +17,29 @@
 	import { useChatStore } from "../stores/Chat";
 	import axios from "axios";
 
+	import { getCurrentInstance } from "vue";
+
+	const instance = getCurrentInstance();
+
 	let onlineCountNow = ref(0);
+
 	const { data: onlineCountData, setOnlineCountData } =
 		inject("onlineCountData");
+
 	const router = useRouter();
+
 	const route = useRoute();
+
 	const { data: show, setShow } = inject("isShow");
+
 	setShow(route.meta.isShow);
 
 	const chatmsg = ref("");
+
 	const messagesEnd = ref(null);
 
 	const containerRef = ref(null);
+
 	const scrollToBottom = () => {
 		const container = containerRef.value;
 		if (container) {
@@ -37,6 +49,7 @@
 			});
 		}
 	};
+
 	// 判断是否滑倒底部
 	function isScrolledToBottom() {
 		const container = containerRef.value;
@@ -59,11 +72,13 @@
 		// 	container.scrollHeight - container.clientHeight - messageHeight.value
 		// );
 	}
+
 	function isFirstScrollMessage() {
 		const container = containerRef.value;
 		if (container.scrollHeight <= container.clientHeight + messageHeight.value)
 			return true;
 	}
+
 	//引入pinia仓库
 	const store = useChatStore();
 
@@ -82,6 +97,7 @@
 	};
 	function isLogin() {
 		let NowUserName = localStorage.getItem("username");
+
 		if (NowUserName) {
 			store.username = NowUserName;
 			router.push("/chatRoom");
@@ -97,8 +113,9 @@
 	});
 
 	let username = localStorage.getItem("username");
-
-	const socket = new WebSocket(`ws://chat.kexie.space:8080/chat/${username}`);
+	let socketURL1 = `ws://10.33.91.119:8080/chat/${username}`;
+	let socketURL2 = `ws://chat.kexie.space:8080/chat/${username}`;
+	const socket = new WebSocket(socketURL2);
 
 	socket.onopen = () => {
 		console.log("监听到打开事件---WebSocket链接建立成功!");
@@ -132,17 +149,18 @@
 	function handleCloseEvent() {
 		console.log("监听到关闭事件---WebSocket链接关闭!");
 	}
-	onUnmounted(() => {
+	function handleBeforeUnload() {
 		let request = {
 			type: "SignOut",
 			sender: localStorage.getItem("ID"),
 		};
-		socket.close();
+
 		const SignOut = axios.create({
 			baseURL: "/api",
 			timeout: 3000,
 			withCredentials: true,
 		});
+
 		SignOut.post("/login", request)
 			.then((res) => {
 				console.log(res.data);
@@ -150,10 +168,13 @@
 			.catch((err) => {
 				console.log(err);
 			});
-		//以下是本地测试环境
 		localStorage.removeItem("username");
 		localStorage.removeItem("avatarSelected");
 		localStorage.removeItem("ID");
+	}
+	onBeforeUnmount(() => {
+		socket.close();
+		window.addEventListener("beforeunload", handleBeforeUnload);
 	});
 
 	const messageHeight = ref(0);

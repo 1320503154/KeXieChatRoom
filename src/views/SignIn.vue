@@ -14,6 +14,11 @@
 	import avatar7 from "/头像8.jpg";
 	import avatar8 from "/头像9.jpg";
 	import avatar9 from "/头像10.jpg";
+
+	import { getCurrentInstance } from "vue";
+
+	const instance = getCurrentInstance();
+
 	const route = useRoute();
 
 	const { data: show, setShow } = inject("isShow");
@@ -107,12 +112,19 @@
 			})
 			.catch((err) => {
 				console.log(err);
-				if (err.message == "Request failed with status code 500")
+				if (err.message == "Request failed with status code 500") {
 					ElMessage({
 						type: "error",
 						message: "服务器响应失败!!!",
-						duration: 2000,
+						duration: 3000,
 					});
+				} else if (err.message == "timeout of 3000ms exceeded") {
+					ElMessage({
+						type: "error",
+						message: "服务器响应时间过长,失败!!!",
+						duration: 3000,
+					});
+				}
 			});
 	}
 

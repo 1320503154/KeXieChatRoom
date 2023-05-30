@@ -10,6 +10,7 @@
 	"dependencies": {
 		"axios": "^1.4.0",
 		"element-plus": "^2.3.4",
+		"mitt": "^3.0.0",
 		"pinia": "^2.0.32",
 		"pinia-plugin-persistedstate": "^3.1.0",
 		"scss": "^0.2.4",

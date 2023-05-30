@@ -7,6 +7,9 @@ dependencies:
   element-plus:
     specifier: ^2.3.4
     version: 2.3.4(vue@3.2.47)
+  mitt:
+    specifier: ^3.0.0
+    version: 3.0.0
   pinia:
     specifier: ^2.0.32
     version: 2.0.36(vue@3.2.47)
@@ -813,6 +816,10 @@ packages:
     dependencies:
       brace-expansion: 2.0.1
     dev: true
+
+  /mitt@3.0.0:
+    resolution: {integrity: sha512-7dX2/10ITVyqh4aOSVI9gdape+t9l2/8QxHrFmUXu4EEUpdlxl6RudZUPZoc+zuY2hk1j7XxVroIVIan/pD/SQ==}
+    dev: false
 
   /mlly@1.2.0:
     resolution: {integrity: sha512-+c7A3CV0KGdKcylsI6khWyts/CYrGTrRVo4R/I7u/cUsy0Conxa6LUhiEzVKIw14lc2L5aiO4+SeVe4TeGRKww==}

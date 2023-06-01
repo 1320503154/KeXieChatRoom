@@ -14,6 +14,7 @@
 
 	import { useRoute, useRouter } from "vue-router";
 	import { ElMessage } from "element-plus";
+
 	import { useChatStore } from "../stores/Chat";
 	import axios from "axios";
 
@@ -114,7 +115,7 @@
 
 	let username = localStorage.getItem("username");
 	let socketURL1 = `ws://10.33.91.119:8080/chat/${username}`;
-	let socketURL2 = `ws://chat.kexie.space:8080/chat/${username}`;
+	let socketURL2 = `ws://chat.kexie.space/chat/${username}`;
 	const socket = new WebSocket(socketURL2);
 
 	socket.onopen = () => {
@@ -156,7 +157,7 @@
 		};
 
 		const SignOut = axios.create({
-			baseURL: "/api",
+			baseURL: "",
 			timeout: 3000,
 			withCredentials: true,
 		});

@@ -14,14 +14,12 @@
 	import avatar7 from "@/assets/头像8.jpg";
 	import avatar8 from "@/assets/头像9.jpg";
 	import avatar9 from "@/assets/头像10.jpg";
-
 	import { getCurrentInstance } from "vue";
 
 	const instance = getCurrentInstance();
+	console.log("avatar9::: ", avatar9);
 
 	const route = useRoute();
-
-	con;
 
 	const { data: show, setShow } = inject("isShow");
 	setShow(route.meta.isShow);

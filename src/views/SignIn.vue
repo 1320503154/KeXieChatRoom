@@ -180,28 +180,12 @@
 		index = randomint(10);
 		avatar.value = data[index].avatar;
 	};
-
-	function Mobile(number) {
-		let flag =
-			/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-				navigator.userAgent
-			);
-		if (flag && number == 1) {
-			return {
-				height: "80vh",
-			};
-		} else if (flag && number == 2) {
-			return {
-				"margin-bottom": "150px",
-			};
-		}
-	}
 </script>
 <template>
 	<div
 		class="allin"
-		:style="Mobile(1)">
-		<form :style="Mobile(2)">
+		>
+		<form>
 			<div style="position: relative">
 				<div class="view">
 					<img
@@ -235,7 +219,7 @@
 		justify-content: center;
 		align-items: center;
 		width: 99vw;
-		height: 100vh;
+		height: 99vh;
 		border-radius: 1rem;
 		background: url("/聊天网页背景.png") no-repeat center center;
 		background-size: cover;

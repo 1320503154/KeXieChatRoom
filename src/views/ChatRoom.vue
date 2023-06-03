@@ -115,7 +115,7 @@
 
 	let username = localStorage.getItem("username");
 	let socketURL1 = `ws://10.33.91.119:8080/chat/${username}`;
-	let socketURL2 = `ws://chat.kexie.space/chat/${username}`;
+	let socketURL2 = `ws://chat.kexie.space/api/chat/${username}`; //api
 	const socket = new WebSocket(socketURL2);
 
 	socket.onopen = () => {
@@ -157,7 +157,7 @@
 		};
 
 		const SignOut = axios.create({
-			baseURL: "",
+			baseURL: "/api",
 			timeout: 3000,
 			withCredentials: true,
 		});
@@ -174,7 +174,6 @@
 		localStorage.removeItem("ID");
 	}
 	onBeforeUnmount(() => {
-		socket.close();
 		window.addEventListener("beforeunload", handleBeforeUnload);
 	});
 

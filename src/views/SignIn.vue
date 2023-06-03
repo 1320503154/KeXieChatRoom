@@ -4,16 +4,16 @@
 	import { useRouter, useRoute } from "vue-router";
 	import { useChatStore } from "../stores/Chat.js";
 	import axios from "axios";
-	import avatar0 from "@/assets/头像1.jpg";
-	import avatar1 from "@/assets/头像2.jpg";
-	import avatar2 from "@/assets/头像3.jpg";
-	import avatar3 from "@/assets/头像4.jpg";
-	import avatar4 from "@/assets/头像5.jpg";
-	import avatar5 from "@/assets/头像6.jpg";
-	import avatar6 from "@/assets/头像7.jpg";
-	import avatar7 from "@/assets/头像8.jpg";
-	import avatar8 from "@/assets/头像9.jpg";
-	import avatar9 from "@/assets/头像10.jpg";
+	import avatar0 from "/头像1.jpg";
+	import avatar1 from "/头像2.jpg";
+	import avatar2 from "/头像3.jpg";
+	import avatar3 from "/头像4.jpg";
+	import avatar4 from "/头像5.jpg";
+	import avatar5 from "/头像6.jpg";
+	import avatar6 from "/头像7.jpg";
+	import avatar7 from "/头像8.jpg";
+	import avatar8 from "/头像9.jpg";
+	import avatar9 from "/头像10.jpg";
 	import { getCurrentInstance } from "vue";
 
 	const instance = getCurrentInstance();
@@ -31,7 +31,7 @@
 		}
 	});
 	const Join = axios.create({
-		baseURL: "",
+		baseURL: "/api",
 		timeout: 3000,
 		withCredentials: true,
 	});

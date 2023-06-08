@@ -16,7 +16,6 @@
 	import { useRouter } from "vue-router";
 	import axios from "axios";
 	import { inject } from "vue";
-	import { some } from "lodash";
 	const EmitSocket = inject("EmitSocket");
 	const PersonCount = inject("onlineCountData");
 	const router = useRouter();

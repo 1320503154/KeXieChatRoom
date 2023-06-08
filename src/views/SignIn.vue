@@ -182,9 +182,7 @@
 	};
 </script>
 <template>
-	<div
-		class="allin"
-		>
+	<div class="allin">
 		<form>
 			<div style="position: relative">
 				<div class="view">

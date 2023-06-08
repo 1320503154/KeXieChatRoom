@@ -3,26 +3,33 @@
 	import navigator from "./components/navigator.vue";
 	import { useChatStore } from "./stores/Chat";
 	import axios from "axios";
-	import { ref, provide } from "vue"
+	import { ref, provide } from "vue";
 
-	const onlineCountData = ref({});
-	const show = ref({})
+	const onlineCountData = ref({}); //在线人数
+	let EmitSocket = 0; //socket实例
+	const show = ref({}); //显示导航栏
 	provide("onlineCountData", {
 		data: onlineCountData,
 		setOnlineCountData(value) {
 			onlineCountData.value = value;
-		}
-	})
+		},
+	});
+	provide("EmitSocket", {
+		data: EmitSocket, //data: socket
+		setEmitSocket(value) {
+			EmitSocket = value; //EmitSocket =  socket
+		},
+	});
 	provide("isShow", {
 		data: show,
 		setShow(value) {
 			show.value = value;
-		}
-	})
+		},
+	});
 </script>
 
 <template>
-	<navigator v-if="show"/>
+	<navigator v-if="show" />
 	<div class="Main-container">
 		<RouterView />
 	</div>

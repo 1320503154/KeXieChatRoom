@@ -1,6 +1,6 @@
 <template>
 	<div class="container">
-		<div class="text">在线人数：{{ onlineCountData }}</div>
+		<div class="text">在线人数：{{ PersonCount.data }}</div>
 		<div class="bt">
 			<button
 				class="out-btn"
@@ -16,17 +16,17 @@
 	import { useRouter } from "vue-router";
 	import axios from "axios";
 	import { inject } from "vue";
-
-	const { data: onlineCountData, setOnlineCountData } =
-		inject("onlineCountData");
-
-	const count = ref(0);
+	import { some } from "lodash";
+	const EmitSocket = inject("EmitSocket");
+	const PersonCount = inject("onlineCountData");
 	const router = useRouter();
+	//创建axios实例,用于登出
 	const SignOut = axios.create({
 		baseURL: "/api",
 		timeout: 3000,
 		withCredentials: true,
 	});
+	//点击登出按钮触发的函数
 	function handleClickOut() {
 		let request = {
 			type: "SignOut",
@@ -34,16 +34,18 @@
 		};
 		SignOut.post("/login", request)
 			.then((res) => {
-				console.log(res.data);
+				console.log("登出成功" + res.data);
 			})
 			.catch((err) => {
-				console.log(err);
+				console.log("登出失败" + err);
 			});
-		//以下是本地测试环境
+		//关闭socket链接
+		EmitSocket.data.close();
+		//移除本地存储的所有东西
 		localStorage.removeItem("username");
 		localStorage.removeItem("avatarSelected");
 		localStorage.removeItem("ID");
-		router.push("/login");
+		router.push("/login"); //跳转到登录界面
 	}
 </script>
 

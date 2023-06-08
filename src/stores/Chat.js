@@ -4,8 +4,8 @@ import axios from "axios";
 export const useChatStore = defineStore("chat", {
 	state: () => ({
 		username: "Default",
-		avatarSelected: Math.floor(Math.random() * 10) + 1,
-		messageList: [],
+		avatarSelected: Math.floor(Math.random() * 10) + 1, //头像选择,暂时没用
+		messageList: [], //存放消息对象的数组
 	}),
 	getters: {
 		//computed
@@ -18,17 +18,6 @@ export const useChatStore = defineStore("chat", {
 	},
 	actions: {
 		//methods
-		async getApi() {
-			try {
-				const res = await axios.get("https://api.wrdan.com/hitokoto");
-				if (res.status == 200) {
-					console.log(res);
-					this.addMessage(res.data.text);
-				}
-			} catch (err) {
-				console.error(err);
-			}
-		},
 		addMessage(message) {
 			this.messageList.push(message);
 		},

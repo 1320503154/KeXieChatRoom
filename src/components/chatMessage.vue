@@ -62,7 +62,6 @@
 	};
 </script>
 <template>
-	<!-- 时间关系，没有做深度调优和代码简化，诸位看着办，大部分仅是二次封装进行布局 -->
 	<div
 		class="msg"
 		ref="chatMessage">

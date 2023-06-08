@@ -11,24 +11,15 @@
 		inject,
 	} from "vue";
 	import chatMessage from "../components/chatMessage.vue";
-
 	import { useRoute, useRouter } from "vue-router";
 	import { ElMessage } from "element-plus";
-
 	import { useChatStore } from "../stores/Chat";
 	import axios from "axios";
 
-	import { getCurrentInstance } from "vue";
-
-	const instance = getCurrentInstance();
-
 	let onlineCountNow = ref(0);
-
 	const { data: onlineCountData, setOnlineCountData } =
-		inject("onlineCountData");
-
+		inject("onlineCountData"); //传递在线人数
 	const router = useRouter();
-
 	const route = useRoute();
 
 	const { data: show, setShow } = inject("isShow");
@@ -86,7 +77,6 @@
 	onMounted(() => {
 		isLogin();
 		Welcome();
-		containerRef.value.scrollTop = containerRef.value.scrollHeight;
 	});
 
 	const Welcome = () => {
@@ -108,30 +98,32 @@
 	}
 
 	onUpdated(() => {
-		if (isScrolledToBottom() || isFirstScrollMessage()) {
+		if (isScrolledToBottom()) {
 			containerRef.value.scrollTop = containerRef.value.scrollHeight;
 		}
 	});
 
-	let username = localStorage.getItem("username");
-	let socketURL1 = `ws://10.33.91.119:8080/chat/${username}`;
-	let socketURL2 = `ws://chat.kexie.space/api/chat/${username}`; //api
-	const socket = new WebSocket(socketURL2);
+	const username = localStorage.getItem("username"); //获取本地存储的用户名
+	const socketURL = `ws://chat.kexie.space/api/chat/${username}`; //websocket的链接地址
+	const socket = new WebSocket(socketURL); //创建websocket实例
+
+	const { data: EmitSocket, setEmitSocket } = inject("EmitSocket"); //传递socket对象
+	setEmitSocket(socket); //将socket对象传递给EmitSocket
 
 	socket.onopen = () => {
 		console.log("监听到打开事件---WebSocket链接建立成功!");
 	};
 
-	socket.onmessage = handleMsgEvent;
+	socket.onmessage = handleMsgEvent; //监听到消息事件,触发handleMsgEvent函数
 
 	function handleMsgEvent(event) {
 		console.log("监听到消息事件---WebSocket消息接收成功!");
 
-		let EventData = JSON.parse(event.data);
+		const EventData = JSON.parse(event.data);
 		// 将在线人数传给App组件再传给navigator
-		if (EventData.data.type === "onlineCountChanged") {
-			onlineCountNow = EventData.data.onlineCountNow;
-			setOnlineCountData(onlineCountNow);
+		if (EventData.data.type == "onlineCountChanged") {
+			onlineCountNow.value = EventData.data.onlineCountNow;
+			setOnlineCountData(onlineCountNow.value);
 		}
 
 		if (EventData.data.type == "incomingMsg") {
@@ -140,16 +132,15 @@
 				avatarSelected: EventData.data.senderAvatarId,
 				username: EventData.data.name,
 			};
-
 			store.addMessage(msgList);
 		}
 	}
-
-	socket.onclose = handleCloseEvent;
-
 	function handleCloseEvent() {
 		console.log("监听到关闭事件---WebSocket链接关闭!");
 	}
+	socket.onclose = handleCloseEvent;
+
+	//关闭标签页时触发的函数
 	function handleBeforeUnload() {
 		let request = {
 			type: "SignOut",
@@ -172,19 +163,19 @@
 		localStorage.removeItem("username");
 		localStorage.removeItem("avatarSelected");
 		localStorage.removeItem("ID");
+		socket.close();
 	}
+	window.addEventListener("beforeunload", handleBeforeUnload);
+	//Vue3中的生命周期函数,在组件卸载之前触发
 	onBeforeUnmount(() => {
-		window.addEventListener("beforeunload", handleBeforeUnload);
+		socket.close();
 	});
-
 	const messageHeight = ref(0);
 	// 得到子组件的消息高度
 	const getMessageHeight = (height) => {
 		messageHeight.value = height;
 	};
-
-	// 以下是本地测试的代码
-
+	//点击发送按钮触发的函数
 	function AddMsg() {
 		if (chatmsg.value.trim() == "") {
 			ElMessage({
@@ -204,12 +195,7 @@
 			avatarSelected: localStorage.getItem("avatarSelected"),
 		});
 		socket.send(chatMsgList);
-		// let messageObject = {
-		// 	username: username,
-		// 	message: chatMsg,
-		// 	avatarSelected: Math.floor(Math.random() * 10) + 1,
-		// };
-		// store.addMessage(messageObject);
+
 		chatmsg.value = "";
 	}
 </script>

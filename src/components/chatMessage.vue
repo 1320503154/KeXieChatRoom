@@ -93,6 +93,7 @@
 	.msg {
 		margin-top: 0.8rem;
 		margin-left: 0.8rem;
+		max-width: 90%;
 	}
 
 	.main {

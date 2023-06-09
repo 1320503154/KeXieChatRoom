@@ -21,7 +21,11 @@
 		inject("onlineCountData"); //传递在线人数
 	const router = useRouter();
 	const route = useRoute();
-
+	const Join = axios.create({
+		baseURL: "/api",
+		timeout: 3000,
+		withCredentials: true,
+	});
 	const { data: show, setShow } = inject("isShow");
 
 	setShow(route.meta.isShow);
@@ -90,8 +94,38 @@
 		let NowUserName = localStorage.getItem("username");
 
 		if (NowUserName) {
+			Join.post("/login", request)
+				.then((res) => {
+					console.log(res);
+					if (res.data.statuts == "sucessed") {
+						setTimeout(() => {
+							router.push("/chatRoom");
+						}, 500);
+					} else if (res.data.statuts == "failedAtDuplicationOfName") {
+						ElMessage({
+							type: "error",
+							message: "你取得用户名和别人重名了",
+							duration: 2000,
+						});
+					}
+				})
+				.catch((err) => {
+					console.log(err);
+					if (err.message == "Request failed with status code 500") {
+						ElMessage({
+							type: "error",
+							message: "服务器响应失败!!!",
+							duration: 3000,
+						});
+					} else if (err.message == "timeout of 3000ms exceeded") {
+						ElMessage({
+							type: "error",
+							message: "服务器响应时间过长,失败!!!",
+							duration: 3000,
+						});
+					}
+				});
 			store.username = NowUserName;
-			router.push("/chatRoom");
 		} else {
 			router.push("/Login");
 		}
@@ -280,6 +314,11 @@
 		background: transparent;
 		z-index: 0;
 		overflow-y: auto;
+		overflow-x: hidden;
+		align-items: center;
+		word-break: break-all;
+		word-wrap: break-word;
+		overflow-wrap: break-word;
 		margin-left: 0.3rem;
 	}
 

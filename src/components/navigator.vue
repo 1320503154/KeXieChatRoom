@@ -60,6 +60,9 @@
 	}
 
 	.container {
+		position: sticky;
+		top: 0;
+		z-index: 1000;
 		height: 7vh;
 		display: flex;
 		justify-content: space-around;

@@ -69,14 +69,15 @@
 		// );
 	}
 
-	function isFirstScrollMessage() {
-		const container = containerRef.value;
-		if (container.scrollHeight <= container.clientHeight + messageHeight.value)
-			return true;
-	}
+	// function isFirstScrollMessage() {
+	// 	const container = containerRef.value;
+	// 	if (container.scrollHeight <= container.clientHeight + messageHeight.value)
+	// 		return true;
+	// }
 
 	//引入pinia仓库
 	const store = useChatStore();
+	//设置每次自动登录的时候发送给服务器的请求信息
 
 	onMounted(() => {
 		isLogin();
@@ -94,38 +95,9 @@
 		let NowUserName = localStorage.getItem("username");
 
 		if (NowUserName) {
-			Join.post("/login", request)
-				.then((res) => {
-					console.log(res);
-					if (res.data.statuts == "sucessed") {
-						setTimeout(() => {
-							router.push("/chatRoom");
-						}, 500);
-					} else if (res.data.statuts == "failedAtDuplicationOfName") {
-						ElMessage({
-							type: "error",
-							message: "你取得用户名和别人重名了",
-							duration: 2000,
-						});
-					}
-				})
-				.catch((err) => {
-					console.log(err);
-					if (err.message == "Request failed with status code 500") {
-						ElMessage({
-							type: "error",
-							message: "服务器响应失败!!!",
-							duration: 3000,
-						});
-					} else if (err.message == "timeout of 3000ms exceeded") {
-						ElMessage({
-							type: "error",
-							message: "服务器响应时间过长,失败!!!",
-							duration: 3000,
-						});
-					}
-				});
+			router.push("/chatRoom");
 			store.username = NowUserName;
+			// 直接进入聊天室
 		} else {
 			router.push("/Login");
 		}

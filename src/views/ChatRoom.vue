@@ -140,34 +140,36 @@
 	}
 	socket.onclose = handleCloseEvent;
 
-	//关闭标签页时触发的函数
-	function handleBeforeUnload() {
-		let request = {
-			type: "SignOut",
-			sender: localStorage.getItem("ID"),
-		};
+	//关闭或者刷新标签页都会触发的函数
+	// function handleBeforeUnload() {
+	// 	let request = {
+	// 		type: "SignOut",
+	// 		sender: localStorage.getItem("ID"),
+	// 	};
 
-		const SignOut = axios.create({
-			baseURL: "/api",
-			timeout: 3000,
-			withCredentials: true,
-		});
+	// 	const SignOut = axios.create({
+	// 		baseURL: "/api",
+	// 		timeout: 3000,
+	// 		withCredentials: true,
+	// 	});
 
-		SignOut.post("/login", request)
-			.then((res) => {
-				console.log(res.data);
-			})
-			.catch((err) => {
-				console.log(err);
-			});
-		localStorage.removeItem("username");
-		localStorage.removeItem("avatarSelected");
-		localStorage.removeItem("ID");
-		socket.close();
-	}
-	window.addEventListener("beforeunload", handleBeforeUnload);
+	// 	SignOut.post("/login", request)
+	// 		.then((res) => {
+	// 			console.log(res.data);
+	// 		})
+	// 		.catch((err) => {
+	// 			console.log(err);
+	// 		});
+	// 	localStorage.removeItem("username");
+	// 	localStorage.removeItem("avatarSelected");
+	// 	localStorage.removeItem("ID");
+	// 	socket.close();
+	// }
+
+	// window.addEventListener("beforeunload", handleBeforeUnload);
+
 	//Vue3中的生命周期函数,在组件卸载之前触发
-	onBeforeUnmount(() => {
+	onUnmounted(() => {
 		socket.close();
 	});
 	const messageHeight = ref(0);

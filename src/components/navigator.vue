@@ -16,7 +16,7 @@
 	import { useRouter } from "vue-router";
 	import axios from "axios";
 	import { inject } from "vue";
-	const EmitSocket = inject("EmitSocket");
+	const { data: socket } = inject("EmitSocket");
 	const PersonCount = inject("onlineCountData");
 	const router = useRouter();
 	//创建axios实例,用于登出
@@ -38,8 +38,8 @@
 			.catch((err) => {
 				console.log("登出失败" + err);
 			});
-		//关闭socket链接
-		EmitSocket.data.close();
+
+		socket.close(); //关闭socket链接
 		//移除本地存储的所有东西
 		localStorage.removeItem("username");
 		localStorage.removeItem("avatarSelected");

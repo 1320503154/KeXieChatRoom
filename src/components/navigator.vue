@@ -16,7 +16,9 @@
 	import { useRouter } from "vue-router";
 	import axios from "axios";
 	import { inject } from "vue";
+	//传递socket实例
 	const { data: socket } = inject("EmitSocket");
+	//父组件传值.获取socket实例
 	const PersonCount = inject("onlineCountData");
 	const router = useRouter();
 	//创建axios实例,用于登出
@@ -26,6 +28,9 @@
 		withCredentials: true,
 	});
 	//点击登出按钮触发的函数
+	const stopSocket = () => {
+		socket.close();
+	};
 	function handleClickOut() {
 		let request = {
 			type: "SignOut",
@@ -33,18 +38,17 @@
 		};
 		SignOut.post("/login", request)
 			.then((res) => {
-				console.log("登出成功" + res.data);
+				console.log("登出成功");
+				console.log(res.data);
 			})
 			.catch((err) => {
 				console.log("登出失败" + err);
 			});
-
-		socket.close(); //关闭socket链接
-		//移除本地存储的所有东西
 		localStorage.removeItem("username");
 		localStorage.removeItem("avatarSelected");
 		localStorage.removeItem("ID");
 		router.push("/login"); //跳转到登录界面
+		stopSocket();
 	}
 </script>
 

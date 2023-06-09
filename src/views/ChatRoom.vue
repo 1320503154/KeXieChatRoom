@@ -169,9 +169,24 @@
 	// window.addEventListener("beforeunload", handleBeforeUnload);
 
 	//Vue3中的生命周期函数,在组件卸载之前触发
-	onUnmounted(() => {
-		socket.close();
+	onBeforeUnmount(() => {
+		socket.close(); //在组件将被卸载的时候关闭socket链接
+		ElMessage({
+			type: "error",
+			message: "你已经离开聊天室!",
+			duration: 1500,
+		});
+		//关于onBeforeUnmount的用法请看文档:https://v3.cn.vuejs.org/api/composition-api.html#onbeforeunmount
 	});
+	onUnmounted(() => {
+		ElMessage({
+			type: "error",
+			message: "你已经离开聊天室!",
+			duration: 1500,
+		});
+		socket.close(); //在组件卸载的时候关闭socket链接
+	});
+
 	const messageHeight = ref(0);
 	// 得到子组件的消息高度
 	const getMessageHeight = (height) => {
@@ -392,6 +407,7 @@
 	.scroll-to-bottom:active {
 		box-shadow: 2px 2px 4px 2px rgba(0, 0, 0, 0.3) inset;
 	}
+
 	/* .scroll-to-bottom::after {
 		content: "点我到底部";
 		display: none;
